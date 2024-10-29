@@ -134,6 +134,8 @@ $(document).ready(function () {
     $('#confirmCreateTaskBtn').click(function () {
         const taskName = $('#taskName').val();
         const taskDescription = $('#taskDescription').val();
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
 
         $.ajax({
             url: 'http://prj-backend/tasks',
@@ -141,6 +143,8 @@ $(document).ready(function () {
             data: {
                 title: taskName,
                 description: taskDescription,
+                start_date: startDate,
+                end_date: endDate
             },
             success: function () {
                 loadProjects();
