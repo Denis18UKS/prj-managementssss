@@ -1,157 +1,177 @@
 $(document).ready(function () {
-    // Загрузка проектов и руководителей
+    // Загрузка проектов
     function loadProjects() {
         $.ajax({
             url: 'http://prj-backend/projects',
             method: 'GET',
+            dataType: 'json',
             success: function (data) {
                 $('.tasks__cards').empty();
                 data.forEach(function (project) {
                     $('.tasks__cards').append(`
-                <div class="tasks__card ${project.priority}">
-                    <div class="tasks__card-project">${project.title}</div>
-                    <div class="tasks__card-manager">Руководитель: ${project.maintainer.name}</div>
-                    <button class="add_user_btn edit-project" data-id="${project.id}">Редактировать</button>
-                </div>
-            `);
+                        <div class="tasks__card ${project.priority}">
+                            <div class="tasks__card-project">${project.title}</div>
+                            <div class="tasks__card-manager">Руководитель: ${project.maintainer.name}</div>
+                            <button class="add_user_btn edit-project" data-id="${project.id}">Редактировать</button>
+                        </div>
+                    `);
                 });
             },
-            error: function () {
-                console.log('Ошибка при загрузке проектов');
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке проектов:', error);
             }
         });
     }
 
     function loadManagerOptions() {
-        // Здесь нужно запросить список пользователей (руководителей) 
         $.ajax({
-            url: 'http://prj-backend/managers', // Или ваш URL для пользователей
+            url: 'http://prj-backend/managers',
             method: 'GET',
+            dataType: 'json',
             success: function (data) {
                 $('#projectManager').empty();
                 data.forEach(function (user) {
                     $('#projectManager').append(`<option value="${user.id}">${user.name}</option>`);
                 });
             },
-            error: function () {
-                console.log('Ошибка при загрузке руководителей');
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке руководителей:', error);
             }
         });
     }
 
-    function loadProjectSelect() {
+    function loadExecutorOptions() {
         $.ajax({
-            url: 'http://prj-backend/projects',
+            url: 'http://prj-backend/executors',
             method: 'GET',
+            dataType: 'json',
             success: function (data) {
-                $('#taskProjectId').empty();
-                data.forEach(function (project) {
-                    $('#taskProjectId').append(`<option value="${project.id}">${project.title}</option>`);
-                });
-            },
-            error: function () {
-                console.log('Ошибка при загрузке проектов для задач');
-            }
-        });
-    }
-
-    function loadAssigneeOptions() {
-        $.ajax({
-            url: 'http://prj-backend/users', // Или ваш URL для пользователей
-            method: 'GET',
-            success: function (data) {
-                $('#taskAssigneeId').empty();
+                $('#projectExecutor').empty();
                 data.forEach(function (user) {
-                    $('#taskAssigneeId').append(`<option value="${user.id}">${user.name}</option>`);
+                    $('#projectExecutor').append(`<option value="${user.id}">${user.name}</option>`);
                 });
             },
-            error: function () {
-                console.log('Ошибка при загрузке исполнителей');
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке исполнителей:', error);
             }
         });
     }
-
 
     function loadTaskSelect() {
         $.ajax({
-            url: 'http://prj-backend/tasks', // или ваш URL для задач
+            url: 'http://prj-backend/tasks',
             method: 'GET',
+            dataType: 'json',
             success: function (data) {
                 $('#projectTaskId').empty();
                 data.forEach(function (task) {
                     $('#projectTaskId').append(`<option value="${task.id}">${task.title}</option>`);
                 });
             },
-            error: function () {
-                console.log('Ошибка при загрузке задач');
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке задач:', error);
             }
         });
     }
 
+    // Инициализация данных при загрузке страницы
     loadProjects();
     loadManagerOptions();
-    loadProjectSelect();
-    loadAssigneeOptions();
     loadTaskSelect();
+    loadExecutorOptions();
 
+    // Открытие модального окна для создания проекта
     $('#createProjectBtn').click(function () {
         $('#createProjectModal').show();
         $('#projectName').val('');
     });
 
+    // Открытие модального окна для создания задачи
     $('#createTaskBtnModal').click(function () {
         $('#createTaskModal').show();
         $('#taskName').val('');
     });
 
-    $('#closeProjectModal, #closeTaskModal').click(function () {
-        $('#createProjectModal, #createTaskModal').hide();
+    // Закрытие модального окна для создания проекта
+    $('#closeProjectModal').click(function () {
+        $('#createProjectModal').hide();
     });
 
+    // Закрытие модального окна для создания задачи
+    $('#closeTaskModal').click(function () {
+        $('#createTaskModal').hide();
+    });
+
+    // Подтверждение создания проекта
     $('#confirmCreateProjectBtn').click(function () {
-        const projectName = $('#projectName').val();
+        const projectName = $('#projectName').val().trim();
+        const projectDescription = $('#projectDescription').val().trim();
+        const projectStartDate = $('#projectStartDate').val();
+        const projectEndDate = $('#projectEndDate').val();
+        const projectStatus = $('#projectStatus').val();
         const projectManager = $('#projectManager').val();
+        const projectExecutor = $('#projectExecutor').val();
         const projectPriority = $('#projectPriority').val();
+
+        if (projectName === '' || !projectStartDate || !projectEndDate) {
+            alert('Пожалуйста, заполните все обязательные поля');
+            return;
+        }
 
         $.ajax({
             url: 'http://prj-backend/projects',
             method: 'POST',
-            data: {
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
                 title: projectName,
+                description: projectDescription,
+                start_date: projectStartDate,
+                end_date: projectEndDate,
+                status: projectStatus,
                 maintainer_id: projectManager,
+                executor_id: projectExecutor,
                 project_priority: projectPriority
-            },
+            }),
             success: function () {
                 loadProjects();
                 $('#createProjectModal').hide();
             },
-            error: function () {
-                console.log('Ошибка при создании проекта');
+            error: function (xhr, status, error) {
+                console.log('Ошибка при создании проекта:', error);
             }
         });
     });
 
+    // Подтверждение создания задачи
     $('#confirmCreateTaskBtn').click(function () {
-        const taskName = $('#taskName').val();
-        const taskDescription = $('#taskDescription').val();
+        const taskName = $('#taskName').val().trim();
+        const taskDescription = $('#taskDescription').val().trim();
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
+
+        if (taskName === '' || taskDescription === '' || !startDate || !endDate) {
+            alert('Пожалуйста, заполните все поля');
+            return;
+        }
 
         $.ajax({
             url: 'http://prj-backend/tasks',
             method: 'POST',
-            data: {
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
                 title: taskName,
                 description: taskDescription,
                 start_date: startDate,
                 end_date: endDate
-            },
+            }),
             success: function () {
-                loadProjects();
+                loadProjects(); // Возможно, нужно обновить только задачи
                 $('#createTaskModal').hide();
             },
-            error: function () {
-                console.log('Ошибка при создании задачи');
+            error: function (xhr, status, error) {
+                console.log('Ошибка при создании задачи:', error);
             }
         });
     });
