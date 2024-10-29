@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Manrope;
+}
+body {
+    background-color: #fafafa;
+}
+a {
+    text-decoration: none;
+}
+.container {
+    max-width: 1400px;    
+    width: 100%;
+    margin: 0 auto;
+}
+h1.title {
+    font-family: Manrope;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 46.2px;
+    color: #262626;
+}
+h2.title {
+    font-family: Manrope;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 34px;
+    color: #262626;
+}
