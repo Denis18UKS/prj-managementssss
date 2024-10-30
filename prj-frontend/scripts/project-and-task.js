@@ -101,6 +101,7 @@ $(document).ready(function () {
     loadManagerOptions();
     loadExecutorOptions();
     loadTaskSelect();
+    loadProjectsIntoSelect();
 
     // Открытие модального окна для создания проекта
     $('#createProjectBtn').click(function () {
@@ -171,6 +172,7 @@ $(document).ready(function () {
             }
         });
     }
+
     // Открытие модального окна для редактирования проекта
     $(document).on('click', '.edit-project', function () {
         const projectId = $(this).data('id');
@@ -252,12 +254,29 @@ $(document).ready(function () {
         }
     });
 
+    function loadProjectsIntoSelect() {
+        $.ajax({
+            url: 'http://prj-backend/getprojects',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#projectSelect').empty(); // Очистка выпадающего списка
+                data.forEach(function (project) {
+                    $('#projectSelect').append(`<option value="${project.id}">${project.title}</option>`); // Заполнение выпадающего списка
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке проектов:', error);
+            }
+        });
+    }
     // Подтверждение создания задачи
     $('#confirmCreateTaskBtn').click(function () {
         const taskName = $('#taskName').val().trim();
         const taskDescription = $('#taskDescription').val().trim();
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
+        const projectID = $('#projectSelect').val(); // Получение ID из выпадающего списка проектов
 
         if (taskName === '' || taskDescription === '' || !startDate || !endDate) {
             alert('Пожалуйста, заполните все поля');
@@ -273,7 +292,7 @@ $(document).ready(function () {
                 description: taskDescription,
                 start_date: startDate,
                 end_date: endDate,
-                project_id: $('#projectTaskId').val()
+                project_id: projectID
             }),
             success: function () {
                 $('#createTaskModal').hide();

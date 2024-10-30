@@ -13,19 +13,21 @@ class TaskController extends Controller
         return response()->json(Task::all(), 200);
     }
 
-    public function store(Request $request)
+    protected function validationRules()
     {
-        // Валидация входных данных
-        $validatedData = $request->validate([
+        return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date|before_or_equal:end_date',
             'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
+            'project_id' => 'required'
+        ];
+    }
 
-        // Создание задачи
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate($this->validationRules());
         $task = Task::create($validatedData);
-
         return response()->json($task, 201);
     }
 
@@ -38,17 +40,8 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
         $task = Task::findOrFail($id);
-
-        // Валидация обновляемых данных
-        $validatedData = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'start_date' => 'sometimes|required|date|before_or_equal:end_date',
-            'end_date' => 'sometimes|required|date|after_or_equal:start_date',
-        ]);
-
+        $validatedData = $request->validate($this->validationRules());
         $task->update($validatedData);
-
         return response()->json($task, 200);
     }
 

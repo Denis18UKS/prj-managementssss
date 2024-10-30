@@ -17,6 +17,12 @@ class ProjectController extends Controller
         return $projects;
     }
 
+    public function getProjects()
+    {
+        return response()->json(Project::select('id', 'title')->get(), 200);
+    }
+
+
     public function show($id)
     {
         Log::info('Fetching project with ID: ' . $id);

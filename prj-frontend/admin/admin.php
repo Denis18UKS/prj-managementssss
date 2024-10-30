@@ -108,6 +108,8 @@
         <div class="modal-content">
             <span class="close" id="closeTaskModal">&times;</span>
             <h2>Создать задачу</h2>
+
+            <!-- Поля ввода для создания задачи -->
             <input type="text" id="taskName" placeholder="Название задачи" required>
             <textarea id="taskDescription" placeholder="Описание задачи" rows="4"></textarea>
 
@@ -116,9 +118,18 @@
 
             <label for="endDate">Дата окончания:</label>
             <input type="date" id="endDate" required>
-            <button id="confirmCreateTaskBtn">Создать</button>
+
+            <!-- Выпадающий список с проектами -->
+            <label for="#projectSelect">Выберите проект:</label>
+            <select id="projectSelect" required>
+                <!-- Динамически добавляем проекты с помощью JavaScript -->
+            </select>
+
+            <button id="confirmCreateTaskBtn">Создать задачу</button>
+
         </div>
     </div>
+
 
 </body>
 
