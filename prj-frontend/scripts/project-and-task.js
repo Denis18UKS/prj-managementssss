@@ -21,6 +21,7 @@ $(document).ready(function () {
                             <div class="tasks__card-executor">Исполнитель: ${project.executor.name}</div>
                             <div class="tasks__card-priority">Приоритет: ${project.priority}</div>
                             <div class="tasks__card-status">Статус: ${project.status}</div>
+                            <div class="tasks__card-remaining_days">Осталось дней: ${project.remaining_days}</div>
                             <button class="add_user_btn edit-project" data-id="${project.id}">Редактировать</button>
                         </div>
                     `);
