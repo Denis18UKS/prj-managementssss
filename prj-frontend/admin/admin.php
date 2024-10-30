@@ -59,7 +59,6 @@
             </select>
 
             <select id="editProjectManager"></select>
-            <select id="editProjectExecutor"></select>
 
             <select id="editProjectPriority">
                 <option value="low">Низкий</option>

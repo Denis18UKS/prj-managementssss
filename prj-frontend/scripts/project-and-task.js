@@ -153,9 +153,30 @@ $(document).ready(function () {
         });
     });
 
+    function loadManagers() {
+        $.ajax({
+            url: 'http://prj-backend/managers',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#editProjectManager').empty();
+                data.forEach(function (manager) {
+                    $('#editProjectManager').append(
+                        `<option value="${manager.id}">${manager.name}</option>`
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке руководителей:', error);
+            }
+        });
+    }
     // Открытие модального окна для редактирования проекта
     $(document).on('click', '.edit-project', function () {
         const projectId = $(this).data('id');
+        loadManagers();
+
+
 
         // Загрузка данных проекта
         $.ajax({
@@ -170,7 +191,6 @@ $(document).ready(function () {
                 $('#editProjectStatus').val(project.status);
                 $('#editProjectPriority').val(project.priority);
                 $('#editProjectManager').val(project.maintainer_id);
-                $('#editProjectExecutor').val(project.executor_id);
 
                 $('#editProjectModal').show();
                 $('#editProjectModal').data('id', projectId); // Сохранение ID проекта для редактирования
