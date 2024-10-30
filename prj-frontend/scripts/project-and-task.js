@@ -98,10 +98,12 @@ $(document).ready(function () {
 
     // Инициализация данных при загрузке страницы
     loadProjects();
+    loadProjectsIntoCache();
     loadManagerOptions();
     loadExecutorOptions();
     loadTaskSelect();
     loadProjectsIntoSelect();
+    loadTasks();
 
     // Открытие модального окна для создания проекта
     $('#createProjectBtn').click(function () {
@@ -304,26 +306,53 @@ $(document).ready(function () {
         });
     });
 
-    // Загрузка задач
-    function loadTasks() {
+    let projectsCache = {};
+
+    function loadProjectsIntoCache() {
         $.ajax({
-            url: 'http://prj-backend/tasks',
+            url: 'http://prj-backend/getprojects',
             method: 'GET',
-            dataType: 'json',
             success: function (data) {
-                $('.tasks__list').empty();
-                data.forEach(function (task) {
-                    $('.tasks__list').append(`
-                        <li>${task.title} - ${task.description} <button class="btn btn-danger delete-task" data-id="${task.id}">Удалить</button></li>
-                    `);
+                data.forEach(project => {
+                    projectsCache[project.id] = project.title; // Кэшируем проекты в объект
                 });
             },
-            error: function (xhr, status, error) {
-                console.log('Ошибка при загрузке задач:', error);
+            error: function () {
+                console.error('Ошибка при загрузке проектов');
             }
         });
     }
 
+    function getProjectNameById(projectId) {
+        return projectsCache[projectId];
+    }
+
+    function loadTasks() {
+        $.ajax({
+            url: 'http://prj-backend/tasks',
+            method: 'GET',
+            success: function (data) {
+                const taskList = $('#taskList');
+                taskList.empty(); // Очистить список перед добавлением новых задач
+                data.forEach(task => {
+                    // Предположим, что task.project_id возвращает ID проекта
+                    const projectName = getProjectNameById(task.project_id); // Необходимо создать эту функцию
+                    const taskCard = `
+                        <div class="task-card">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-description">${task.description}</div>
+                            <div class="task-project">Проект: ${projectName || 'Неизвестный проект'}</div>
+                        </div>
+                    `;
+                    taskList.append(taskCard);
+                });
+            },
+            error: function () {
+                console.error('Ошибка при загрузке задач');
+                $('#taskList').html('<p>Не удалось загрузить задачи.</p>');
+            }
+        });
+    }
     // Удаление задачи
     $(document).on('click', '.delete-task', function () {
         const taskId = $(this).data('id');

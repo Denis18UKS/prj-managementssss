@@ -35,6 +35,9 @@
             </div>
 
             <div class="tasks__cards"></div>
+
+            <h2 class="tasks__header-title">Задачи</h2>
+            <div id="taskList" class="tasks__list"></div>
         </div>
     </div>
 
