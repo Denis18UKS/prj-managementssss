@@ -248,8 +248,7 @@ button {
 .projects__cards,
 .reports__cards {
     margin-top: 12px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
     gap: 20px;
 }
 
@@ -266,30 +265,19 @@ button {
     cursor: pointer;
 }
 
-.tasks__card {
-    position: relative;
+
+
+.task-card {
+    width: 80%;
 }
 
 .tasks__card-priority {
-    width: 42px;
     height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 15px;
-}
-
-.tasks__card-priority.low {
-    background-color: #7faf45;
-}
-
-.tasks__card-priority.medium {
-    background-color: #ffcc00;
-}
-
-.tasks__card-priority.high {
-    background-color: #fa4d35;
 }
 
 .tasks__card-background {
@@ -299,16 +287,19 @@ button {
 }
 
 .tasks__card.low {
+    /* width: 120%; */
     background-color: #f3f8ed;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .tasks__card.medium {
+    /* width: 120%; */
     background-color: #fff5b0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .tasks__card.high {
+    /* width: 120%; */
     background-color: #ffdccd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -648,27 +639,38 @@ button:hover {
 
 /* Основной стиль для модального окна */
 .modal {
-    display: none; /* Скрыть по умолчанию */
+    display: none;
+    /* Скрыть по умолчанию */
     position: fixed;
-    z-index: 1000; /* На переднем плане */
+    z-index: 1000;
+    /* На переднем плане */
     left: 0;
     top: 0;
-    width: 100%; /* Полная ширина */
-    height: 100%; /* Полная высота */
-    overflow: auto; /* Добавить прокрутку, если нужно */
-    background-color: rgb(0, 0, 0); /* Черный фон */
-    background-color: rgba(0, 0, 0, 0.4); /* Полупрозрачный фон */
+    width: 100%;
+    /* Полная ширина */
+    height: 100%;
+    /* Полная высота */
+    overflow: auto;
+    /* Добавить прокрутку, если нужно */
+    background-color: rgb(0, 0, 0);
+    /* Черный фон */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Полупрозрачный фон */
 }
 
 /* Стили для содержимого модального окна */
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% сверху и центрировать */
+    margin: 15% auto;
+    /* 15% сверху и центрировать */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Ширина модального окна */
-    max-width: 600px; /* Максимальная ширина */
-    border-radius: 8px; /* Закругленные углы */
+    width: 80%;
+    /* Ширина модального окна */
+    max-width: 600px;
+    /* Максимальная ширина */
+    border-radius: 8px;
+    /* Закругленные углы */
     margin-top: 2%;
 }
 
@@ -704,7 +706,8 @@ button:hover {
 
 /* Кнопки */
 .modal button {
-    background-color: #4caf50; /* Зеленый */
+    background-color: #4caf50;
+    /* Зеленый */
     color: white;
     padding: 10px;
     border: none;
@@ -713,6 +716,6 @@ button:hover {
 }
 
 .modal button:hover {
-    background-color: #45a049; /* Более темный зеленый */
+    background-color: #45a049;
+    /* Более темный зеленый */
 }
-

@@ -13,16 +13,37 @@ $(document).ready(function () {
 
                     $('.tasks__cards').append(`
                         <div class="tasks__card ${project.priority}">
+                        
                             <div class="tasks__card-title">${project.title}</div>
+
+                            <hr>
                             <div class="tasks__card-description">${project.description}</div>
+
+                            <hr>
                             <div class="tasks__card-start">Дата начала: ${startDate}</div>
+
+                            <hr>
                             <div class="tasks__card-end">Дата окончания: ${endDate}</div>
+
+                            <hr>
                             <div class="tasks__card-manager">Руководитель: ${project.maintainer.name}</div>
+
+                            <hr>
                             <div class="tasks__card-executor">Исполнитель: ${project.executor.name}</div>
+
+                            <hr>
                             <div class="tasks__card-priority">Приоритет: ${project.priority}</div>
+
+                            <hr>
                             <div class="tasks__card-status">Статус: ${project.status}</div>
+                            <hr>
                             <div class="tasks__card-remaining_days">Осталось дней: ${project.remaining_days}</div>
-                            <button class="add_user_btn edit-project" data-id="${project.id}">Редактировать</button>
+                            <hr>
+
+                            <div id='btns'>
+                                <button class="btn btn-dark edit-project" data-id="${project.id}">Редактировать</button>
+                                <button class="btn btn-danger delete-project" data-id="${project.id}">Удалить</button>
+                            </div>
                         </div>
                     `);
                 });
