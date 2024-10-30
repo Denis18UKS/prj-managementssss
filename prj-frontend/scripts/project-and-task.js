@@ -13,33 +13,24 @@ $(document).ready(function () {
 
                     $('.tasks__cards').append(`
                         <div class="tasks__card ${project.priority}">
-                        
                             <div class="tasks__card-title">${project.title}</div>
-
                             <hr>
                             <div class="tasks__card-description">${project.description}</div>
-
                             <hr>
                             <div class="tasks__card-start">Дата начала: ${startDate}</div>
-
                             <hr>
                             <div class="tasks__card-end">Дата окончания: ${endDate}</div>
-
                             <hr>
                             <div class="tasks__card-manager">Руководитель: ${project.maintainer.name}</div>
-
                             <hr>
                             <div class="tasks__card-executor">Исполнитель: ${project.executor.name}</div>
-
                             <hr>
                             <div class="tasks__card-priority">Приоритет: ${project.priority}</div>
-
                             <hr>
                             <div class="tasks__card-status">Статус: ${project.status}</div>
                             <hr>
                             <div class="tasks__card-remaining_days">Осталось дней: ${project.remaining_days}</div>
                             <hr>
-
                             <div id='btns'>
                                 <button class="btn btn-dark edit-project" data-id="${project.id}">Редактировать</button>
                                 <button class="btn btn-danger delete-project" data-id="${project.id}">Удалить</button>
@@ -108,8 +99,8 @@ $(document).ready(function () {
     // Инициализация данных при загрузке страницы
     loadProjects();
     loadManagerOptions();
-    loadTaskSelect();
     loadExecutorOptions();
+    loadTaskSelect();
 
     // Открытие модального окна для создания проекта
     $('#createProjectBtn').click(function () {
@@ -162,6 +153,85 @@ $(document).ready(function () {
         });
     });
 
+    // Открытие модального окна для редактирования проекта
+    $(document).on('click', '.edit-project', function () {
+        const projectId = $(this).data('id');
+
+        // Загрузка данных проекта
+        $.ajax({
+            url: `http://prj-backend/projects/${projectId}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function (project) {
+                $('#editProjectName').val(project.title);
+                $('#editProjectDescription').val(project.description);
+                $('#editProjectStartDate').val(project.start_date.split('T')[0]); // Приведение к формату YYYY-MM-DD
+                $('#editProjectEndDate').val(project.end_date.split('T')[0]);
+                $('#editProjectStatus').val(project.status);
+                $('#editProjectPriority').val(project.priority);
+                $('#editProjectManager').val(project.maintainer_id);
+                $('#editProjectExecutor').val(project.executor_id);
+
+                $('#editProjectModal').show();
+                $('#editProjectModal').data('id', projectId); // Сохранение ID проекта для редактирования
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке проекта:', error);
+            }
+        });
+    });
+
+    // Закрытие модального окна для редактирования проекта
+    $('#closeEditProjectModal').click(function () {
+        $('#editProjectModal').hide();
+    });
+
+    // Подтверждение редактирования проекта
+    $('#confirmEditProjectBtn').on('click', function () {
+        const projectId = $('#editProjectModal').data('id'); // Получение ID проекта
+        const projectData = {
+            maintainer_id: $('#editProjectManager').val(),
+            executor_id: $('#editProjectExecutor').val(),
+            title: $('#editProjectName').val(),
+            description: $('#editProjectDescription').val(),
+            start_date: $('#editProjectStartDate').val(),
+            end_date: $('#editProjectEndDate').val(),
+            status: $('#editProjectStatus').val(),
+            priority: $('#editProjectPriority').val()
+        };
+
+        $.ajax({
+            url: `http://prj-backend/projects/${projectId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(projectData),
+            success: function (response) {
+                loadProjects(); // Перезагрузка списка проектов
+                $('#editProjectModal').hide(); // Закрытие модального окна
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка при редактировании проекта:', error);
+            }
+        });
+    });
+
+    // Удаление проекта
+    $(document).on('click', '.delete-project', function () {
+        const projectId = $(this).data('id');
+        if (confirm('Вы уверены, что хотите удалить этот проект?')) {
+            $.ajax({
+                url: `http://prj-backend/projects/${projectId}`,
+                method: 'DELETE',
+                success: function (response) {
+                    loadProjects(); // Перезагрузка списка проектов
+                },
+                error: function (xhr, status, error) {
+                    console.log('Ошибка при удалении проекта:', error);
+                }
+            });
+        }
+    });
+
     // Подтверждение создания задачи
     $('#confirmCreateTaskBtn').click(function () {
         const taskName = $('#taskName').val().trim();
@@ -178,20 +248,57 @@ $(document).ready(function () {
             url: 'http://prj-backend/tasks',
             method: 'POST',
             contentType: 'application/json',
-            dataType: 'json',
             data: JSON.stringify({
                 title: taskName,
                 description: taskDescription,
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                project_id: $('#projectTaskId').val()
             }),
             success: function () {
-                loadProjects(); // Возможно, нужно обновить только задачи
                 $('#createTaskModal').hide();
+                loadTasks(); // Обновить список задач
             },
             error: function (xhr, status, error) {
                 console.log('Ошибка при создании задачи:', error);
             }
         });
+    });
+
+    // Загрузка задач
+    function loadTasks() {
+        $.ajax({
+            url: 'http://prj-backend/tasks',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('.tasks__list').empty();
+                data.forEach(function (task) {
+                    $('.tasks__list').append(`
+                        <li>${task.title} - ${task.description} <button class="btn btn-danger delete-task" data-id="${task.id}">Удалить</button></li>
+                    `);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке задач:', error);
+            }
+        });
+    }
+
+    // Удаление задачи
+    $(document).on('click', '.delete-task', function () {
+        const taskId = $(this).data('id');
+        if (confirm('Вы уверены, что хотите удалить эту задачу?')) {
+            $.ajax({
+                url: `http://prj-backend/tasks/${taskId}`,
+                method: 'DELETE',
+                success: function () {
+                    loadTasks(); // Перезагрузка списка задач
+                },
+                error: function (xhr, status, error) {
+                    console.log('Ошибка при удалении задачи:', error);
+                }
+            });
+        }
     });
 });

@@ -20,7 +20,7 @@ class ProjectController extends Controller
     public function show($id)
     {
         Log::info('Fetching project with ID: ' . $id);
-        $project = Project::with(['projectStatus', 'maintainer', 'executor'])->findOrFail($id);
+        $project = Project::with(['maintainer', 'executor'])->findOrFail($id);
         Log::info('Project fetched successfully', ['project' => $project]);
         return $project;
     }
@@ -60,13 +60,13 @@ class ProjectController extends Controller
 
         $project = Project::findOrFail($id);
         $request->validate([
-            'project_status_id' => 'exists:project_statuses,id',
             'maintainer_id' => 'exists:users,id',
             'executor_id' => 'exists:users,id',
             'title' => 'string|unique:projects,title,' . $project->id,
             'description' => 'string',
             'start_date' => 'date',
             'end_date' => 'date|after:start_date',
+            'status' => 'required|in:created,in_progress,completed' // Проверка приоритета
         ]);
 
         $data = $request->all();

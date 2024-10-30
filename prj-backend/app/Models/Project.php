@@ -19,9 +19,9 @@ class Project extends Model
         'maintainer_id',
         'executor_id',
         'priority',
-        'remaining_days'
+        'remaining_days',
+        'status', // Добавлено поле status
     ];
-
 
     protected $casts = [
         'start_date' => 'datetime',
@@ -55,5 +55,15 @@ class Project extends Model
     public function scopeCompleted(Builder $builder)
     {
         return $builder->where('status', 'completed');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($project) {
+            // Обновляем remaining_days перед сохранением
+            $project->remaining_days = $project->days_remaining;
+        });
     }
 }

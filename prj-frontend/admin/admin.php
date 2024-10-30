@@ -27,9 +27,9 @@
             </form>
         </div>
 
-        <div class="tasks">
-            <div class="tasks__header">
-                <h2 class="tasks__header-title">Проекты</h2>
+        <div class="projects">
+            <div class="projects__header">
+                <h2 class="projects__header-title">Проекты</h2>
                 <button class="add_user_btn" id="createProjectBtn">Создать проект</button>
                 <button class="add_user_btn" id="createTaskBtnModal">Создать задачу</button>
             </div>
@@ -37,6 +37,39 @@
             <div class="tasks__cards"></div>
         </div>
     </div>
+
+    <!-- Модальное окно редактирования проекта -->
+    <div id="editProjectModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeEditProjectModal">&times;</span>
+            <h2>Редактировать проект</h2>
+            <input type="text" id="editProjectName" placeholder="Название проекта" required>
+            <textarea id="editProjectDescription" placeholder="Описание проекта" rows="4"></textarea>
+
+            <label for="editProjectStartDate">Дата начала:</label>
+            <input type="date" id="editProjectStartDate" required>
+
+            <label for="editProjectEndDate">Дата окончания:</label>
+            <input type="date" id="editProjectEndDate" required>
+
+            <select id="editProjectStatus">
+                <option value="created">Создан</option>
+                <option value="in_progress">В процессе</option>
+                <option value="completed">Завершён</option>
+            </select>
+
+            <select id="editProjectManager"></select>
+            <select id="editProjectExecutor"></select>
+
+            <select id="editProjectPriority">
+                <option value="low">Низкий</option>
+                <option value="medium">Средний</option>
+                <option value="high">Высокий</option>
+            </select>
+            <button id="confirmEditProjectBtn">Сохранить изменения</button>
+        </div>
+    </div>
+
 
     <!-- Модальное окно создания проекта -->
     <div id="createProjectModal" class="modal">

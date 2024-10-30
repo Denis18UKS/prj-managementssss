@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Окт 30 2024 г., 04:29
--- Версия сервера: 8.0.30
+-- Время создания: Окт 30 2024 г., 07:20
+-- Версия сервера: 5.7.39-log
 -- Версия PHP: 8.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -44,9 +44,9 @@ CREATE TABLE `failed_jobs` (
 --
 
 CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -70,9 +70,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `model_has_permissions` (
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -82,9 +82,9 @@ CREATE TABLE `model_has_permissions` (
 --
 
 CREATE TABLE `model_has_roles` (
-  `role_id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -94,7 +94,8 @@ CREATE TABLE `model_has_roles` (
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (4, 'App\\Models\\User', 1),
 (6, 'App\\Models\\User', 2),
-(5, 'App\\Models\\User', 3);
+(5, 'App\\Models\\User', 3),
+(6, 'App\\Models\\User', 4);
 
 -- --------------------------------------------------------
 
@@ -103,8 +104,8 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 --
 
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -115,9 +116,9 @@ CREATE TABLE `password_reset_tokens` (
 --
 
 CREATE TABLE `permissions` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `guard_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -129,12 +130,12 @@ CREATE TABLE `permissions` (
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -148,16 +149,16 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `projects` (
-  `id` bigint UNSIGNED NOT NULL,
-  `maintainer_id` bigint UNSIGNED NOT NULL,
-  `executor_id` bigint UNSIGNED NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `maintainer_id` bigint(20) UNSIGNED NOT NULL,
+  `executor_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `status` enum('created','in_progress','completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created',
-  `priority` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remaining_days` int DEFAULT NULL,
+  `status` enum('created','in_progress','completed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created',
+  `priority` enum('low','medium','high') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remaining_days` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -167,11 +168,9 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `maintainer_id`, `executor_id`, `title`, `description`, `start_date`, `end_date`, `status`, `priority`, `remaining_days`, `created_at`, `updated_at`) VALUES
-(1, 2, 3, 'proect #1', 'proect #1proect #1proect #1proect #1proect #1', '2024-10-30', '2024-12-12', 'created', 'Средний', NULL, '2024-10-29 17:15:20', '2024-10-29 17:15:20'),
-(2, 2, 3, 'proect #2', 'proect #2proect #2proect #2', '2024-10-30', '2024-11-01', 'created', 'Средний', NULL, '2024-10-29 17:29:18', '2024-10-29 17:29:18'),
-(3, 2, 3, 'proect #3', 'proect #3proect #3proect #3proect #3proect #3', '2024-10-30', '2024-11-02', 'created', 'Средний', NULL, '2024-10-29 17:45:37', '2024-10-29 17:45:37'),
-(4, 2, 3, 'testtesttest', 'testtesttest', '2024-10-30', '2024-11-04', 'created', 'Средний', NULL, '2024-10-29 17:47:11', '2024-10-29 17:47:11'),
-(5, 2, 3, 'dwdw', 'dwwddw', '2024-10-30', '2024-10-31', 'created', 'Средний', 1, '2024-10-29 17:52:25', '2024-10-29 17:52:25');
+(6, 2, 3, 'proect #1', 'proect #1proect #1proect #1proect #1proect #1', '2024-10-30', '2024-11-10', 'created', 'low', 10, '2024-10-30 00:32:00', '2024-10-30 00:32:00'),
+(7, 2, 3, 'proect #2', 'proect #2proect #2proect #2proect #2', '2024-10-30', '2024-11-02', 'created', 'high', 2, '2024-10-30 00:32:31', '2024-10-30 00:32:31'),
+(9, 4, 3, 'proect #4', 'proect #4proect #4proect #4proect #4proect #4proect #4', '2024-10-30', '2024-11-06', 'created', 'medium', 6, '2024-10-30 00:34:10', '2024-10-30 00:34:10');
 
 -- --------------------------------------------------------
 
@@ -180,9 +179,9 @@ INSERT INTO `projects` (`id`, `maintainer_id`, `executor_id`, `title`, `descript
 --
 
 CREATE TABLE `roles` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `guard_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -192,12 +191,12 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'api', '2024-10-24 18:32:33', '2024-10-24 18:32:33'),
-(2, 'manager', 'api', '2024-10-24 18:32:37', '2024-10-24 18:32:37'),
-(3, 'user', 'api', '2024-10-24 18:32:40', '2024-10-24 18:32:40'),
-(4, 'Admin', 'web', '2024-10-27 15:23:14', '2024-10-27 15:23:14'),
-(5, 'user', 'web', '2024-10-27 17:20:28', '2024-10-27 17:20:28'),
-(6, 'manager', 'web', '2024-10-27 20:14:23', '2024-10-27 20:14:23');
+(1, 'admin', 'api', '2024-10-24 15:32:33', '2024-10-24 15:32:33'),
+(2, 'manager', 'api', '2024-10-24 15:32:37', '2024-10-24 15:32:37'),
+(3, 'user', 'api', '2024-10-24 15:32:40', '2024-10-24 15:32:40'),
+(4, 'Admin', 'web', '2024-10-27 12:23:14', '2024-10-27 12:23:14'),
+(5, 'user', 'web', '2024-10-27 14:20:28', '2024-10-27 14:20:28'),
+(6, 'manager', 'web', '2024-10-27 17:14:23', '2024-10-27 17:14:23');
 
 -- --------------------------------------------------------
 
@@ -206,8 +205,8 @@ INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VAL
 --
 
 CREATE TABLE `role_has_permissions` (
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `role_id` bigint UNSIGNED NOT NULL
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -217,16 +216,16 @@ CREATE TABLE `role_has_permissions` (
 --
 
 CREATE TABLE `tasks` (
-  `id` bigint UNSIGNED NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `project_id` bigint UNSIGNED DEFAULT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
-  `priority` enum('Низкий','Средний','Высокий') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `project_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `priority` enum('Низкий','Средний','Высокий') COLLATE utf8mb4_unicode_ci NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `status` enum('Назначена','Выполняется','Завершена') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `days_left` int NOT NULL DEFAULT '0',
+  `status` enum('Назначена','Выполняется','Завершена') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `days_left` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -236,7 +235,7 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `title`, `description`, `project_id`, `user_id`, `priority`, `start_date`, `end_date`, `status`, `days_left`, `created_at`, `updated_at`) VALUES
-(1, 'test #1', 'test #1test #1test #1test #1', NULL, NULL, 'Низкий', '2024-10-30', '2024-11-10', 'Назначена', 0, '2024-10-29 17:14:47', '2024-10-29 17:14:47');
+(2, 'test #1', 'test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1', NULL, NULL, 'Низкий', '2024-10-30', '2024-10-31', 'Назначена', 0, '2024-10-30 00:20:56', '2024-10-30 00:20:56');
 
 -- --------------------------------------------------------
 
@@ -245,12 +244,12 @@ INSERT INTO `tasks` (`id`, `title`, `description`, `project_id`, `user_id`, `pri
 --
 
 CREATE TABLE `users` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -260,9 +259,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Денис', 'honorxpremium75@gmail.com', NULL, '$2y$12$6wQS2GAHa1T0wabUJEMOsuLtVDwOq6CFnfYTS1caJyaf/BiZuZhtS', NULL, '2024-10-29 17:12:00', '2024-10-29 17:12:00'),
-(2, 'Максим', 'lakos208@gmail.com', NULL, '$2y$12$pyLBGxW3CXXIslUTZMtHi.zbzrPWe0BC5paf/dKmwZVVccCHn40GS', NULL, '2024-10-29 17:12:37', '2024-10-29 17:12:37'),
-(3, 'Никита', 'den.karpov471@mail.com', NULL, '$2y$12$URsTUuJ1MW4P0inxtE61y.zi2N0qLQwabROvMCpYbJToKWGmmL7zK', NULL, '2024-10-29 17:13:12', '2024-10-29 17:13:12');
+(1, 'Денис', 'honorxpremium75@gmail.com', NULL, '$2y$12$6wQS2GAHa1T0wabUJEMOsuLtVDwOq6CFnfYTS1caJyaf/BiZuZhtS', 'nky6YEnIKWjcOxJEfT3si2cW2MmQi13tPXgXuquKfSPY5KpYPsUXmRRCDB1P', '2024-10-29 14:12:00', '2024-10-29 14:12:00'),
+(2, 'Максим', 'lakos208@gmail.com', NULL, '$2y$12$pyLBGxW3CXXIslUTZMtHi.zbzrPWe0BC5paf/dKmwZVVccCHn40GS', NULL, '2024-10-29 14:12:37', '2024-10-29 14:12:37'),
+(3, 'Никита', 'den.karpov471@mail.com', NULL, '$2y$12$URsTUuJ1MW4P0inxtE61y.zi2N0qLQwabROvMCpYbJToKWGmmL7zK', NULL, '2024-10-29 14:13:12', '2024-10-29 14:13:12'),
+(4, 'Александр', 'Aleksand@gmail.ru', NULL, '$2y$12$Ra88YO01TNP0.dlRlmI23.E1banxO/bPK/BXZ.pXdUjoMckwY4u9u', NULL, '2024-10-30 00:33:06', '2024-10-30 00:33:06');
 
 --
 -- Индексы сохранённых таблиц
@@ -362,49 +362,49 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
