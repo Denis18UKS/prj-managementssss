@@ -8,10 +8,19 @@ $(document).ready(function () {
             success: function (data) {
                 $('.tasks__cards').empty();
                 data.forEach(function (project) {
+                    const startDate = new Date(project.start_date).toLocaleDateString(); // Приведение даты начала к привычному формату
+                    const endDate = new Date(project.end_date).toLocaleDateString(); // Приведение даты окончания к привычному формату
+
                     $('.tasks__cards').append(`
                         <div class="tasks__card ${project.priority}">
-                            <div class="tasks__card-project">${project.title}</div>
+                            <div class="tasks__card-title">${project.title}</div>
+                            <div class="tasks__card-description">${project.description}</div>
+                            <div class="tasks__card-start">Дата начала: ${startDate}</div>
+                            <div class="tasks__card-end">Дата окончания: ${endDate}</div>
                             <div class="tasks__card-manager">Руководитель: ${project.maintainer.name}</div>
+                            <div class="tasks__card-executor">Исполнитель: ${project.executor.name}</div>
+                            <div class="tasks__card-priority">Приоритет: ${project.priority}</div>
+                            <div class="tasks__card-status">Статус: ${project.status}</div>
                             <button class="add_user_btn edit-project" data-id="${project.id}">Редактировать</button>
                         </div>
                     `);
@@ -103,37 +112,25 @@ $(document).ready(function () {
     });
 
     // Подтверждение создания проекта
-    $('#confirmCreateProjectBtn').click(function () {
-        const projectName = $('#projectName').val().trim();
-        const projectDescription = $('#projectDescription').val().trim();
-        const projectStartDate = $('#projectStartDate').val();
-        const projectEndDate = $('#projectEndDate').val();
-        const projectStatus = $('#projectStatus').val();
-        const projectManager = $('#projectManager').val();
-        const projectExecutor = $('#projectExecutor').val();
-        const projectPriority = $('#projectPriority').val();
-
-        if (projectName === '' || !projectStartDate || !projectEndDate) {
-            alert('Пожалуйста, заполните все обязательные поля');
-            return;
-        }
+    $('#confirmCreateProjectBtn').on('click', function () {
+        const projectData = {
+            maintainer_id: $('#projectManager').val(),
+            executor_id: $('#projectExecutor').val(),
+            title: $('#projectName').val(),
+            description: $('#projectDescription').val(),
+            start_date: $('#projectStartDate').val(),
+            end_date: $('#projectEndDate').val(),
+            status: $('#projectStatus').val(),
+            priority: $('#projectPriority').val()
+        };
 
         $.ajax({
             url: 'http://prj-backend/projects',
             method: 'POST',
             contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify({
-                title: projectName,
-                description: projectDescription,
-                start_date: projectStartDate,
-                end_date: projectEndDate,
-                status: projectStatus,
-                maintainer_id: projectManager,
-                executor_id: projectExecutor,
-                project_priority: projectPriority
-            }),
-            success: function () {
+            data: JSON.stringify(projectData),
+            success: function (response) {
+                // Действия при успешном создании проекта
                 loadProjects();
                 $('#createProjectModal').hide();
             },

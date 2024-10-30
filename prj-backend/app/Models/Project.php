@@ -12,12 +12,14 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'maintainer_id',
-        'executor_id',
         'title',
         'description',
         'start_date',
         'end_date',
+        'maintainer_id',
+        'executor_id',
+        'priority',
+        'remaining_days'
     ];
 
 
@@ -26,7 +28,6 @@ class Project extends Model
         'end_date' => 'datetime',
         'status' => 'string',
     ];
-
 
     public function maintainer()
     {
@@ -42,6 +43,10 @@ class Project extends Model
     {
         if ($this->status === 'completed') {
             return 0;
+        }
+
+        if (is_null($this->end_date)) {
+            return 0; // Если end_date отсутствует, возвращаем 0
         }
 
         return Carbon::now()->diffInDays($this->end_date, false);

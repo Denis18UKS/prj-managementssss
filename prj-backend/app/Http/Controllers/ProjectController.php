@@ -12,7 +12,7 @@ class ProjectController extends Controller
     public function index()
     {
         Log::info('Fetching all projects');
-        $projects = Project::with(['projectStatus', 'maintainer', 'executor'])->get();
+        $projects = Project::with(['maintainer', 'executor'])->get();
         Log::info('Projects fetched successfully', ['count' => $projects->count()]);
         return $projects;
     }
@@ -36,6 +36,7 @@ class ProjectController extends Controller
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
+            'priority' => 'required|in:low,medium,high' // Проверка приоритета
         ]);
 
         $data = $request->all();
@@ -43,13 +44,15 @@ class ProjectController extends Controller
         // Расчет оставшихся дней
         $startDate = Carbon::parse($data['start_date']);
         $endDate = Carbon::parse($data['end_date']);
-        $data['remaining_days'] = $endDate->diffInDays($startDate);
+        $data['remaining_days'] = $endDate->diffInDays(Carbon::now());
 
         $project = Project::create($data);
         Log::info('Project created successfully', ['project' => $project]);
 
-        return $project;
+        return response()->json($project, 201);
     }
+
+
 
     public function update(Request $request, $id)
     {
