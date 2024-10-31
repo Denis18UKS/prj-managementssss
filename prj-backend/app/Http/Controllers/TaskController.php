@@ -13,6 +13,31 @@ class TaskController extends Controller
         return response()->json(Task::all(), 200);
     }
 
+    // TaskController.php
+    public function updateStatus(Request $request, $id)
+    {
+        $task = Task::findOrFail($id);
+
+        // Проверяем, что новый статус корректен
+        $validatedData = $request->validate([
+            'status' => 'required|in:Выполняется,Завершена',
+        ]);
+
+        // Обновляем только статус
+        $task->status = $validatedData['status'];
+        $task->save();
+
+        return response()->json([
+            'message' => 'Статус задачи обновлен успешно',
+            'task' => [
+                'start_date' => $task->start_date,
+                'end_date' => $task->end_date,
+                'days_left' => $task->calculateDaysLeft(), // Добавьте этот метод в модель Task
+            ]
+        ]);
+    }
+
+
     protected function validationRules()
     {
         return [
