@@ -103,6 +103,7 @@ $(document).ready(function () {
     loadExecutorOptions();
     loadTaskSelect();
     loadProjectsIntoSelect();
+    loadTasksDisplay();
     loadTasks();
 
     // Открытие модального окна для создания проекта
@@ -327,7 +328,7 @@ $(document).ready(function () {
         return projectsCache[projectId];
     }
 
-    function loadTasks() {
+    function loadTasksDisplay() {
         $.ajax({
             url: 'http://prj-backend/tasks',
             method: 'GET',
@@ -377,30 +378,7 @@ $(document).ready(function () {
             }
         });
 
-        // Открытие модального окна для редактирования задачи
-        $(document).on('click', '.edit-task', function () {
-            const taskId = $(this).closest('.task-card').data('id');
 
-            // Загрузка данных для редактирования задачи
-            $.ajax({
-                url: `http://prj-backend/tasks/${taskId}`,
-                method: 'GET',
-                dataType: 'json',
-                success: function (task) {
-                    $('#taskName').val(task.title);
-                    $('#taskDescription').val(task.description);
-                    $('#startDate').val(task.start_date.split('T')[0]); // Форматирование даты
-                    $('#endDate').val(task.end_date.split('T')[0]);
-                    $('#projectSelect').val(task.project_id); // Установка ID проекта
-
-                    $('#createTaskModal').show(); // Показать модальное окно редактирования
-                    $('#createTaskModal').data('id', taskId); // Сохранение ID задачи для редактирования
-                },
-                error: function (xhr, status, error) {
-                    console.log('Ошибка при загрузке задачи:', error);
-                }
-            });
-        });
     }
 
     function loadTasks() {
@@ -409,54 +387,113 @@ $(document).ready(function () {
             method: 'GET',
             success: function (data) {
                 const taskList = $('#taskList');
-                taskList.empty(); // Очистить список перед добавлением новых задач
+                taskList.empty(); // Очистка списка задач перед добавлением новых
+
                 data.forEach(task => {
-                    // Предположим, что task.project_id возвращает ID проекта
-                    const projectName = getProjectNameById(task.project_id); // Необходимо создать эту функцию
+                    const projectName = getProjectNameById(task.project_id);
                     const taskCard = `
-                        <div class="task-card">
-                            <div class="task-title">${task.title}</div>
-                            <div class="task-description">${task.description}</div>
-                            <div class="task-project">Проект: ${projectName || 'Неизвестный проект'}</div>
+                        <div class="task-card" data-id="${task.id}">
+                            <div class="task-title">
+                                Назване:
+                                ${task.title}
+                            </div>
+                            <div class="task-description">
+                                Описание: <br>
+                                ${task.description}
+                            </div>
+                            <div class="task-project"><h6>Проект: ${projectName || 'Неизвестный проект'}</h6></div>
                             <div class="task-actions">
-                                <button class="edit-task">Редактировать</button>
-                                <button class="delete-task" data-id="${task.id}">Удалить</button>
+                                <button class="edit-task btn btn-success" data-id="${task.id}">Редактировать</button>
+                                <button class="delete-task btn btn-danger" data-id="${task.id}">Удалить</button>
                             </div>
                         </div>
                     `;
                     taskList.append(taskCard);
                 });
-                // Привязка событий к кнопкам редактирования и удаления
-                bindTaskActions();
+
+                // Привязываем действия к кнопкам редактирования
+                $('.edit-task').on('click', function () {
+                    const taskId = $(this).data('id');
+                    openEditTaskModal(taskId);
+                });
+
+                $('.delete-task').on('click', function () {
+                    const taskId = $(this).data('id');
+                    deleteTask(taskId);
+                });
             },
-            error: function () {
-                console.error('Ошибка при загрузке задач');
-                $('#taskList').html('<p>Не удалось загрузить задачи.</p>');
+            error: function (xhr, status, error) {
+                console.error('Ошибка при загрузке задач:', error);
             }
         });
     }
 
-    // Открытие модального окна для редактирования задачи
-    $(document).on('click', '.edit-task', function () {
-        const taskId = $(this).closest('.task-card').data('id');
+    function loadProjectsForEdit() {
+        $.ajax({
+            url: 'http://prj-backend/projects',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#editTaskProject').empty(); // Очистка предыдущих значений
+                data.forEach(function (project) {
+                    $('#editTaskProject').append(`<option value="${project.id}">${project.title}</option>`); // Добавление новых значений
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке проектов:', error);
+            }
+        });
+    }
 
-        // Загрузка данных задачи
+    function openEditTaskModal(taskId) {
         $.ajax({
             url: `http://prj-backend/tasks/${taskId}`,
             method: 'GET',
             dataType: 'json',
             success: function (task) {
-                $('#taskName').val(task.title);
-                $('#taskDescription').val(task.description);
-                $('#startDate').val(task.start_date.split('T')[0]); // Форматирование даты
-                $('#endDate').val(task.end_date.split('T')[0]);
-                $('#projectSelect').val(task.project_id); // Установка ID проекта
+                $('#editTaskName').val(task.title);
+                $('#editTaskDescription').val(task.description);
+                $('#editTaskStartDate').val(task.start_date.split('T')[0]); // Форматирование даты
+                $('#editTaskEndDate').val(task.end_date.split('T')[0]);
+                $('#editTaskProject').val(task.project_id); // Установка ID проекта
 
-                $('#createTaskModal').show(); // Показать модальное окно редактирования
-                $('#createTaskModal').data('id', taskId); // Сохранение ID задачи для редактирования
+                loadProjectsForEdit();
+
+                $('#editTaskModal').data('id', taskId).show(); // Сохранение ID задачи
             },
             error: function (xhr, status, error) {
-                console.log('Ошибка при загрузке задачи:', error);
+                console.error('Ошибка при загрузке задачи:', error);
+            }
+        });
+    }
+
+    // Закрытие модального окна редактирования задачи
+    $('#closeEditTaskModal').click(function () {
+        $('#editTaskModal').hide();
+    });
+
+    // Подтверждение редактирования задачи
+    $('#confirmEditTaskBtn').on('click', function () {
+        const taskId = $('#editTaskModal').data('id'); // Получение ID задачи
+        const taskData = {
+            title: $('#editTaskName').val(),
+            description: $('#editTaskDescription').val(),
+            start_date: $('#editTaskStartDate').val(),
+            end_date: $('#editTaskEndDate').val(),
+            project_id: $('#editTaskProject').val()
+        };
+
+        $.ajax({
+            url: `http://prj-backend/tasks/${taskId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(taskData),
+            success: function (response) {
+                loadTasks(); // Обновить список задач
+                $('#editTaskModal').hide(); // Закрытие модального окна
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка при редактировании задачи:', error);
             }
         });
     });

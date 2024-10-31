@@ -133,7 +133,28 @@
         </div>
     </div>
 
+    <div id="editTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeEditTaskModal">&times;</span>
+            <h2>Редактировать задачу</h2>
 
+            <input type="text" id="editTaskName" placeholder="Название задачи" required>
+            <textarea id="editTaskDescription" placeholder="Описание задачи" rows="4"></textarea>
+
+            <label for="editTaskStartDate">Дата начала:</label>
+            <input type="date" id="editTaskStartDate" required>
+
+            <label for="editTaskEndDate">Дата окончания:</label>
+            <input type="date" id="editTaskEndDate" required>
+
+            <label for="editTaskProject">Выберите проект:</label>
+            <select id="editTaskProject" required>
+                <!-- Динамически добавляем проекты с помощью JavaScript -->
+            </select>
+
+            <button id="confirmEditTaskBtn">Сохранить изменения</button>
+        </div>
+    </div>
 </body>
 
 </html>
