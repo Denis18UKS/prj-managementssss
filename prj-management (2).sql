@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Окт 30 2024 г., 07:20
+-- Время создания: Окт 31 2024 г., 12:24
 -- Версия сервера: 5.7.39-log
 -- Версия PHP: 8.1.9
 
@@ -95,7 +95,8 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (4, 'App\\Models\\User', 1),
 (6, 'App\\Models\\User', 2),
 (5, 'App\\Models\\User', 3),
-(6, 'App\\Models\\User', 4);
+(6, 'App\\Models\\User', 4),
+(5, 'App\\Models\\User', 5);
 
 -- --------------------------------------------------------
 
@@ -168,9 +169,9 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `maintainer_id`, `executor_id`, `title`, `description`, `start_date`, `end_date`, `status`, `priority`, `remaining_days`, `created_at`, `updated_at`) VALUES
-(6, 2, 3, 'proect #1', 'proect #1proect #1proect #1proect #1proect #1', '2024-10-30', '2024-11-10', 'created', 'low', 10, '2024-10-30 00:32:00', '2024-10-30 00:32:00'),
-(7, 2, 3, 'proect #2', 'proect #2proect #2proect #2proect #2', '2024-10-30', '2024-11-02', 'created', 'high', 2, '2024-10-30 00:32:31', '2024-10-30 00:32:31'),
-(9, 4, 3, 'proect #4', 'proect #4proect #4proect #4proect #4proect #4proect #4', '2024-10-30', '2024-11-06', 'created', 'medium', 6, '2024-10-30 00:34:10', '2024-10-30 00:34:10');
+(6, 2, 3, 'proect #1', 'proect #1proect #1proect', '2024-10-31', '2024-11-23', 'created', 'low', 22, '2024-10-30 00:32:00', '2024-10-31 04:09:11'),
+(7, 2, 3, 'proect #2', 'proect #2proect #2', '2024-10-30', '2024-11-08', 'created', 'medium', 8, '2024-10-30 00:32:31', '2024-10-30 14:32:27'),
+(9, 2, 3, 'proect #4', 'proect #4proect #4proect #4', '2024-10-30', '2024-11-03', 'created', 'high', 2, '2024-10-30 00:34:10', '2024-10-31 03:30:18');
 
 -- --------------------------------------------------------
 
@@ -235,7 +236,9 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `title`, `description`, `project_id`, `user_id`, `priority`, `start_date`, `end_date`, `status`, `days_left`, `created_at`, `updated_at`) VALUES
-(2, 'test #1', 'test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1test #1', NULL, NULL, 'Низкий', '2024-10-30', '2024-10-31', 'Назначена', 0, '2024-10-30 00:20:56', '2024-10-30 00:20:56');
+(7, 'task #1', 'task #1task #1task #1', 6, 3, 'Низкий', '2024-10-31', '2024-11-30', 'Завершена', 0, '2024-10-31 00:19:14', '2024-10-31 06:17:47'),
+(9, 'task #2', 'task #2task #2task #2task #2', 7, 3, 'Низкий', '2024-10-31', '2024-11-10', 'Завершена', 0, '2024-10-31 01:09:31', '2024-10-31 06:17:52'),
+(11, 'task #4', 'task #4task #4task #4task #4task #4', 9, 3, 'Низкий', '2024-10-31', '2024-11-10', 'Завершена', 0, '2024-10-31 03:15:25', '2024-10-31 06:17:57');
 
 -- --------------------------------------------------------
 
@@ -260,9 +263,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Денис', 'honorxpremium75@gmail.com', NULL, '$2y$12$6wQS2GAHa1T0wabUJEMOsuLtVDwOq6CFnfYTS1caJyaf/BiZuZhtS', 'nky6YEnIKWjcOxJEfT3si2cW2MmQi13tPXgXuquKfSPY5KpYPsUXmRRCDB1P', '2024-10-29 14:12:00', '2024-10-29 14:12:00'),
-(2, 'Максим', 'lakos208@gmail.com', NULL, '$2y$12$pyLBGxW3CXXIslUTZMtHi.zbzrPWe0BC5paf/dKmwZVVccCHn40GS', NULL, '2024-10-29 14:12:37', '2024-10-29 14:12:37'),
-(3, 'Никита', 'den.karpov471@mail.com', NULL, '$2y$12$URsTUuJ1MW4P0inxtE61y.zi2N0qLQwabROvMCpYbJToKWGmmL7zK', NULL, '2024-10-29 14:13:12', '2024-10-29 14:13:12'),
-(4, 'Александр', 'Aleksand@gmail.ru', NULL, '$2y$12$Ra88YO01TNP0.dlRlmI23.E1banxO/bPK/BXZ.pXdUjoMckwY4u9u', NULL, '2024-10-30 00:33:06', '2024-10-30 00:33:06');
+(2, 'Максим', 'lakos208@gmail.com', NULL, '$2y$12$pyLBGxW3CXXIslUTZMtHi.zbzrPWe0BC5paf/dKmwZVVccCHn40GS', 'CARLqg0xCgklbTOTafEXqeS2spoXcWz4kwYKWAVIoaz5aVmTy6be1ObOSUTN', '2024-10-29 14:12:37', '2024-10-29 14:12:37'),
+(3, 'Никита', 'den.karpov471@mail.com', NULL, '$2y$12$URsTUuJ1MW4P0inxtE61y.zi2N0qLQwabROvMCpYbJToKWGmmL7zK', 'pAxZIJUBMbe29jUdzw2hltTFKbHoA1NDRHH7gdHy8HGGD3nwmIUAvs3Rf0vR', '2024-10-29 14:13:12', '2024-10-29 14:13:12'),
+(4, 'Александр', 'Aleksand@gmail.ru', NULL, '$2y$12$Ra88YO01TNP0.dlRlmI23.E1banxO/bPK/BXZ.pXdUjoMckwY4u9u', 'kweLr1GY45luSkRqRH9w8sp63ZO7RX5RYgaPVoymOhKTeqW1cOIVm9kDY9Ds', '2024-10-30 00:33:06', '2024-10-30 00:33:06'),
+(5, 'DEN', 'subscribetry2@outlook.com', NULL, '$2y$12$GdrFLNNTLuxaB5wx2IGQh.vSzavEu.6j8j66tAosDfbv5rAbh2wry', 'nYglXkp0CxL0XKBRTovsSXfdHNlvfNmcClklFO7P2H6Tapr6dWGLarNyjXfc', '2024-10-31 05:00:24', '2024-10-31 05:00:24');
 
 --
 -- Индексы сохранённых таблиц
@@ -386,7 +390,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `roles`
@@ -398,13 +402,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
