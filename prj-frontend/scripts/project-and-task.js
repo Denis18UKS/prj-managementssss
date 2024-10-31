@@ -141,18 +141,26 @@ $(document).ready(function () {
             priority: $('#projectPriority').val()
         };
 
+        // Проверка: убеждаемся, что все обязательные поля заполнены
+        for (const key in projectData) {
+            if (!projectData[key]) {
+                alert(`Поле ${key} обязательно для заполнения!`);
+                return;
+            }
+        }
+
         $.ajax({
             url: 'http://prj-backend/projects',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(projectData),
             success: function (response) {
-                // Действия при успешном создании проекта
                 loadProjects();
                 $('#createProjectModal').hide();
             },
             error: function (xhr, status, error) {
                 console.log('Ошибка при создании проекта:', error);
+                console.log(xhr.responseText); // для дополнительных сведений
             }
         });
     });
