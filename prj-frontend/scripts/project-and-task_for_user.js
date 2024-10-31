@@ -33,6 +33,7 @@ $(document).ready(function () {
                 taskList.empty();
 
                 data.forEach(task => {
+                    const daysLeft = task.days_left === 0 ? 'Задача завершена' : task.days_left;
                     const projectName = getProjectNameById(task.project_id);
                     const taskActions = task.status === 'Завершена' ? '' : `
                         <div class="task-actions">
@@ -50,7 +51,7 @@ $(document).ready(function () {
                             <div class="task-dates">
                                 Дата начала: ${task.start_date || 'N/A'}<br>
                                 Дата окончания: ${task.end_date || 'N/A'}<br>
-                                Осталось дней: ${task.days_left ?? 'N/A'}
+                                Осталось дней: ${daysLeft}
                             </div>
                             ${taskActions}
                         </div>
