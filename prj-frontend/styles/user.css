@@ -734,6 +734,12 @@ button:hover {
     transition: transform 0.2s;
 }
 
+#taskList{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
 .task-card:hover {
     cursor: pointer;
     transform: scale(1.02);
