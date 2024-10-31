@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="../styles/user.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
     <script src="../scripts/logout.js" defer></script>
-    <script src="../scripts/project-and-task.js" defer></script>
+    <script src="../scripts/project-and-task_for_user.js" defer></script>
 </head>
 
 <body>
-    <?php include 'manager-sidebar.php'; ?> <!-- Включаем навигационную панель -->
+    <?php include 'user-sidebar.php'; ?> <!-- Включаем навигационную панель -->
 
     <div class="container">
         <div class="filter">
@@ -28,12 +28,6 @@
         </div>
 
         <div class="projects">
-            <div class="projects__header">
-                <h2 class="projects__header-title">Проекты</h2>
-                <button class="add_user_btn" id="createProjectBtn">Создать проект</button>
-                <button class="add_user_btn" id="createTaskBtnModal">Создать задачу</button>
-            </div>
-
             <div class="tasks__cards"></div>
 
             <h2 class="tasks__header-title">Задачи</h2>
