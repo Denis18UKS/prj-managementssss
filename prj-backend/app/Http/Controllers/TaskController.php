@@ -10,8 +10,15 @@ class TaskController extends Controller
 {
     public function index()
     {
-        return response()->json(Task::all(), 200);
+        // Получаем все задачи и добавляем поле 'days_left' к каждой задаче
+        $tasks = Task::all()->map(function ($task) {
+            $task->days_left = $task->calculateDaysLeft(); // Добавляем вычисленное поле
+            return $task;
+        });
+
+        return response()->json($tasks, 200);
     }
+
 
     // TaskController.php
     public function updateStatus(Request $request, $id)

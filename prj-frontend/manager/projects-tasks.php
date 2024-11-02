@@ -10,6 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
     <script src="../scripts/logout.js" defer></script>
     <script src="../scripts/project-and-task.js" defer></script>
+    <script src="../scripts/project-and-task_for_user.js" defer></script>
 </head>
 
 <body>
@@ -30,8 +31,6 @@
         <div class="projects">
             <div class="projects__header">
                 <h2 class="projects__header-title">Проекты</h2>
-                <button class="add_user_btn" id="createProjectBtn">Создать проект</button>
-                <button class="add_user_btn" id="createTaskBtnModal">Создать задачу</button>
             </div>
 
             <div class="tasks__cards"></div>
@@ -41,69 +40,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно редактирования проекта -->
-    <div id="editProjectModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeEditProjectModal">&times;</span>
-            <h2>Редактировать проект</h2>
-            <input type="text" id="editProjectName" placeholder="Название проекта" required>
-            <textarea id="editProjectDescription" placeholder="Описание проекта" rows="4"></textarea>
-
-            <label for="editProjectStartDate">Дата начала:</label>
-            <input type="date" id="editProjectStartDate" required>
-
-            <label for="editProjectEndDate">Дата окончания:</label>
-            <input type="date" id="editProjectEndDate" required>
-
-            <select id="editProjectStatus">
-                <option value="created">Создан</option>
-                <option value="in_progress">В процессе</option>
-                <option value="completed">Завершён</option>
-            </select>
-
-            <select id="editProjectManager"></select>
-
-            <select id="editProjectPriority">
-                <option value="low">Низкий</option>
-                <option value="medium">Средний</option>
-                <option value="high">Высокий</option>
-            </select>
-            <button id="confirmEditProjectBtn">Сохранить изменения</button>
-        </div>
-    </div>
-
-
-    <!-- Модальное окно создания проекта -->
-    <div id="createProjectModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeProjectModal">&times;</span>
-            <h2>Создать проект</h2>
-            <input type="text" id="projectName" placeholder="Название проекта" required>
-            <textarea id="projectDescription" placeholder="Описание проекта" rows="4"></textarea>
-
-            <label for="startDate">Дата начала:</label>
-            <input type="date" id="projectStartDate" required>
-
-            <label for="endDate">Дата окончания:</label>
-            <input type="date" id="projectEndDate" required>
-
-            <select id="projectStatus">
-                <option value="created">Создан</option>
-                <option value="in_progress">В процессе</option>
-                <option value="completed">Завершён</option>
-            </select>
-
-            <select id="projectManager"></select>
-            <select id="projectExecutor"></select>
-
-            <select id="projectPriority">
-                <option value="low">Низкий</option>
-                <option value="medium">Средний</option>
-                <option value="high">Высокий</option>
-            </select>
-            <button id="confirmCreateProjectBtn">Создать</button>
-        </div>
-    </div>
 
 
     <!-- Модальное окно создания задачи -->

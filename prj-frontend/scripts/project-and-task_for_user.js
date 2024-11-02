@@ -31,17 +31,27 @@ $(document).ready(function () {
             success: function (data) {
                 const taskList = $('#taskList');
                 taskList.empty();
-
+    
                 data.forEach(task => {
                     const daysLeft = task.days_left === 0 ? 'Задача завершена' : task.days_left;
                     const projectName = getProjectNameById(task.project_id);
-                    const taskActions = task.status === 'Завершена' ? '' : `
-                        <div class="task-actions">
-                            <button class="btn btn-warning start-task" data-id="${task.id}">Начать выполнение</button>
-                            <button class="btn btn-danger finish-task" data-id="${task.id}">Завершить</button>
-                        </div>
-                    `;
-
+                    
+                    // Определяем, какие кнопки показывать в зависимости от статуса задачи
+                    let taskActions = '';
+                    if (task.status === 'Выполняется') {
+                        taskActions = `
+                            <div class="task-actions">
+                                <button class="btn btn-danger finish-task" data-id="${task.id}">Завершить</button>
+                            </div>
+                        `;
+                    } else if (task.status !== 'Завершена') {
+                        taskActions = `
+                            <div class="task-actions">
+                                <button class="btn btn-warning start-task" data-id="${task.id}">Начать выполнение</button>
+                            </div>
+                        `;
+                    }
+    
                     const taskCard = `
                         <div class="task-card" data-id="${task.id}">
                             <div class="task-title">Название: ${task.title}</div>
@@ -58,12 +68,12 @@ $(document).ready(function () {
                     `;
                     taskList.append(taskCard);
                 });
-
+    
                 // Привязываем действия к кнопкам
                 $('.start-task').on('click', function () {
                     updateTaskStatus($(this).data('id'), 'Выполняется');
                 });
-
+    
                 $('.finish-task').on('click', function () {
                     updateTaskStatus($(this).data('id'), 'Завершена');
                 });
@@ -73,6 +83,7 @@ $(document).ready(function () {
             }
         });
     }
+    
 
     function updateTaskStatus(taskId, newStatus) {
         $.ajax({
