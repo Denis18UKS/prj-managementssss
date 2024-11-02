@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 01 2024 г., 04:37
+-- Время создания: Ноя 02 2024 г., 07:09
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -179,6 +179,15 @@ CREATE TABLE `projects` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `projects`
+--
+
+INSERT INTO `projects` (`id`, `maintainer_id`, `executor_id`, `title`, `description`, `start_date`, `end_date`, `status`, `priority`, `remaining_days`, `created_at`, `updated_at`) VALUES
+(2, 2, 4, 'dwdwdw', 'dwdwdwdw', '2024-10-12', '2024-12-12', 'created', 'low', 39, '2024-11-02 01:04:44', '2024-11-02 01:04:44'),
+(3, 2, 4, 'wddwdw', 'dwdwdwdw', '2024-11-02', '2024-11-22', 'created', 'medium', 19, '2024-11-02 01:06:56', '2024-11-02 01:07:28'),
+(4, 2, 4, 'wddwdwdwdwwddwdw', 'dwdwdwdw', '2024-11-02', '2024-11-06', 'created', 'high', 3, '2024-11-02 01:07:43', '2024-11-02 01:07:43');
+
 -- --------------------------------------------------------
 
 --
@@ -237,6 +246,13 @@ CREATE TABLE `tasks` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `tasks`
+--
+
+INSERT INTO `tasks` (`id`, `title`, `description`, `project_id`, `user_id`, `priority`, `start_date`, `end_date`, `status`, `days_left`, `created_at`, `updated_at`) VALUES
+(1, 'вцвцвц', 'вцвцвцвц', 2, NULL, 'Низкий', '2024-11-15', '2024-11-29', 'Назначена', 0, '2024-11-02 01:08:58', '2024-11-02 01:08:58');
+
 -- --------------------------------------------------------
 
 --
@@ -259,11 +275,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Денис', 'honorxpremium75@gmail.com', NULL, '$2y$12$Dhtr0lNqRTLa011Ytk9QS./m9L7p53n/JASHNxQpUVyp7oO9oJEEu', NULL, '2024-10-31 18:42:14', '2024-10-31 18:42:14'),
-(2, 'Максим', 'lakos208@gmail.com', NULL, '$2y$12$BpJm8QO92DDfvoc6sZ6gm.XC7OJn3mgLEfk0BYm.ZPYhhvWA0R3cq', NULL, '2024-10-31 18:42:23', '2024-10-31 18:42:23'),
-(3, 'Анастасия', 'anastasya@mail.ru', NULL, '$2y$12$Cuu4prSnanzuIe11IkRjEem7yulOFprtIinys6beEjiDMXenXOBH.', NULL, '2024-10-31 18:42:33', '2024-10-31 18:42:33'),
-(4, 'Никита', 'den.karpov471@mail.com', NULL, '$2y$12$YqhIg8HzmIRCu0LjFS481Ot6sfwUEr4RA/MhF99q1M.x11IcfWfka', NULL, '2024-10-31 18:42:45', '2024-10-31 18:42:45'),
-(5, 'Den4ik', 'lalkos208@gmail.com', NULL, '$2y$12$dCbwkD50I.3D.mBWRKDBwOSmCaY/RrcyYM/y8eYuX6zoTQsV/5CNW', NULL, '2024-10-31 18:43:25', '2024-10-31 18:43:25');
+(1, 'Денис', 'honorxpremium75@gmail.com', NULL, '$2y$12$CCsO3x3GfrDHFvgITnWDweZgMqTjDkPO8RMIRvRpDON3m2h42/diq', NULL, '2024-11-02 00:32:31', '2024-11-02 00:32:31'),
+(2, 'Максим', 'lakos208@gmail.com', NULL, '$2y$12$JBZdMWF8PrInN/cfDvs/cuKfazBj9ftTRwYN5Q8.D6PSuMwOdOquu', NULL, '2024-11-02 00:32:42', '2024-11-02 00:32:42'),
+(3, 'Александр', 'Aleksand@gmail.ru', NULL, '$2y$12$Hz4ToR8QPv0Oao9IsXoBVODGzRNSxEO5v92JzGyOBO7l027gqb11e', NULL, '2024-11-02 00:32:52', '2024-11-02 00:32:52'),
+(4, 'Никита', 'den.karpov471@gmail.com', NULL, '$2y$12$Lx175NhdQW9lJbum0GaJzOGEFZQCpibt4e9kflCy2Fz6CWXFzB7jS', NULL, '2024-11-02 00:33:06', '2024-11-02 00:33:06'),
+(5, 'Олег', 'subscribe@mail.ru', NULL, '$2y$12$wyD5q/HmcZfGj8pEvPB9f.IJmjo9hfHdcOio3GW7dnVZy2yjIkmki', NULL, '2024-11-02 00:33:24', '2024-11-02 00:33:24');
 
 --
 -- Индексы сохранённых таблиц
@@ -400,7 +416,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `roles`
@@ -412,7 +428,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

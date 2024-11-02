@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Исполнитель задачи
-            $table->enum('priority', ['Низкий', 'Средний', 'Высокий']);
+            $table->enum('priority', ['low', 'medium', 'high']);
             $table->date('start_date');
             $table->date('end_date');
             $table->enum('status', ['Назначена', 'Выполняется', 'Завершена']);
