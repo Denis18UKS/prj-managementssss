@@ -17,9 +17,31 @@ $(document).ready(function () {
         });
     }
 
+    let projectsCache = {};
+
+    function loadProjectsIntoCache() {
+        $.ajax({
+            url: 'http://prj-backend/getprojects',
+            method: 'GET',
+            success: function (data) {
+                data.forEach(project => {
+                    projectsCache[project.id] = project.title; // Кэшируем проекты в объект
+                });
+            },
+            error: function () {
+                console.error('Ошибка при загрузке проектов');
+            }
+        });
+    }
+
+    function getProjectNameById(projectId) {
+        return projectsCache[projectId];
+    }
+
+
     function loadTasks() {
         $.ajax({
-            url: 'http://prj-backend/tasks', // Убедитесь, что этот URL правильный
+            url: 'http://prj-backend/tasks',
             method: 'GET',
             success: function (data) {
                 displayTasks(data); // Отображение задач
@@ -32,7 +54,7 @@ $(document).ready(function () {
 
     function displayTasks(tasks) {
         const tasksContainer = $('.tasks__list');
-        tasksContainer.empty(); // Очищаем контейнер, чтобы избежать дубликатов
+        tasksContainer.empty(); // Очищаем контейнер
 
         tasks.forEach(function (task) {
             // Создаем HTML для каждой задачи
@@ -44,16 +66,15 @@ $(document).ready(function () {
                     <p>Статус: ${task.status}</p>
                     <p>Дней осталось: ${task.days_left}</p>
                     <p>Период: ${task.start_date} - ${task.end_date}</p>
+                    <p>Проект: ${task.project_title}</p>
+                    <p>Исполнитель: ${task.executor_name}</p>
+                    <button class="edit-task" data-id="${task.id}">Редактировать</button>
+                    <button class="delete-task" data-id="${task.id}">Удалить</button>
                 </div>
             `;
             tasksContainer.append(taskCard); // Добавляем задачу в контейнер
         });
     }
-
-    // Вызов функции загрузки задач при загрузке страницы
-    $(document).ready(function () {
-        loadTasks();
-    });
 
     // Привязка событий к кнопкам задач
     function attachTaskActions() {
@@ -76,51 +97,54 @@ $(document).ready(function () {
     });
 
     // Подтверждение создания задачи
-    $('#confirmCreateTaskBtn').on('click', function () {
-        const projectId = $('#taskProjectId').val();  // получаем ID проекта из формы
+    $('#confirmCreateTaskBtn').click(function () {
+        const taskName = $('#taskName').val().trim();
+        const taskDescription = $('#taskDescription').val().trim();
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+        const projectID = $('#projectSelect').val(); // Получение ID из выпадающего списка проектов
+
+        if (taskName === '' || taskDescription === '' || !startDate || !endDate) {
+            alert('Пожалуйста, заполните все поля');
+            return;
+        }
 
         $.ajax({
-            url: `http://prj-backend/projects/${projectId}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function (project) {
-                const taskData = {
-                    executor_id: project.user_id,  // ID пользователя из проекта
-                    title: $('#taskName').val(),
-                    description: $('#taskDescription').val(),
-                    start_date: $('#taskStartDate').val(),
-                    end_date: $('#taskEndDate').val(),
-                    status: $('#taskStatus').val(),
-                    priority: $('#taskPriority').val(),
-                    project_id: projectId
-                };
-
-                for (const key in taskData) {
-                    if (!taskData[key]) {
-                        alert(`Поле ${key} обязательно для заполнения!`);
-                        return;
-                    }
-                }
-
-                $.ajax({
-                    url: 'http://prj-backend/tasks',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(taskData),
-                    success: function () {
-                        loadTasks();
-                        $('#createTaskModal').hide();
-                    },
-                    error: function (xhr, status, error) {
-                        console.log('Ошибка при создании задачи:', error);
-                    }
-                });
+            url: 'http://prj-backend/tasks',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                title: taskName,
+                description: taskDescription,
+                start_date: startDate,
+                end_date: endDate,
+                project_id: projectID
+            }),
+            success: function () {
+                $('#createTaskModal').hide();
+                loadTasks(); // Обновить список задач
             },
             error: function (xhr, status, error) {
-                console.log('Ошибка при получении данных проекта:', error);
+                console.log('Ошибка при создании задачи:', error);
             }
         });
     });
+
+    // Функция для удаления задачи
+    function deleteTask(taskId) {
+        if (confirm('Вы уверены, что хотите удалить эту задачу?')) {
+            $.ajax({
+                url: `http://prj-backend/tasks/${taskId}`, // Здесь должен быть правильный URL для удаления задачи
+                method: 'DELETE',
+                success: function () {
+                    loadTasks(); // Обновляем список задач после удаления
+                },
+                error: function (xhr, status, error) {
+                    console.log('Ошибка при удалении задачи:', error);
+                }
+            });
+        }
+    }
 
     // Закрытие модальных окон для создания и редактирования задачи
     $('#closeTaskModal, #closeEditTaskModal').click(function () {
@@ -131,4 +155,6 @@ $(document).ready(function () {
     loadTasks();
     loadProjectsIntoSelect();
     attachTaskActions();
+
+
 });
