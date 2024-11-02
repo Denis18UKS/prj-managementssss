@@ -19,7 +19,9 @@ class ProjectController extends Controller
 
     public function getProjects()
     {
-        return response()->json(Project::select('id', 'title')->get(), 200);
+        $projects = Project::select('id', 'title')->get();
+        Log::info('Projects fetched', ['projects' => $projects]);
+        return response()->json($projects, 200);
     }
 
 

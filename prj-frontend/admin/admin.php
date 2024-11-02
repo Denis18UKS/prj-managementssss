@@ -32,7 +32,7 @@
             <div class="projects__header">
                 <h2 class="projects__header-title">Проекты</h2>
                 <button class="add_user_btn" id="createProjectBtn">Создать проект</button>
-                <button class="add_user_btn" id="createTaskBtnModal">Создать задачу</button>
+                <button class="add_user_btn" id="createTaskBtn">Создать задачу</button>
             </div>
 
             <div class="tasks__cards"></div>
