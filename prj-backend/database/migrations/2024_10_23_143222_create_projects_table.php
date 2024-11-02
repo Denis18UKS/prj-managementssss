@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\User;
-use App\Models\ProjectStatus;
 
 return new class extends Migration
 {
@@ -31,9 +30,10 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->enum('status', ['created', 'in_progress', 'completed'])->default('created');
+            $table->enum('priority', ['low', 'medium', 'high']);
+
             $table->integer('remaining_days')->nullable(); // Остаток дней до окончания
             $table->timestamps();
-
         });
     }
 

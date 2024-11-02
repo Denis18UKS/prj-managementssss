@@ -17,7 +17,7 @@ class ProjectResource extends JsonResource
         return array_merge(parent::toArray($request), [
             'maintainer' => new UserResource($this->resource->maintainer),
             'executor' => new UserResource($this->resource->executor),
-            'days_remaining' => new UserResource($this->resource->daysRemaining),
+            'days_remaining' => $this->daysRemaining, // Изменено
         ]);
     }
 }

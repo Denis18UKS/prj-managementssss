@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function executors(): JsonResponse
     {
-        $users = User::role('executors')->select('id', 'name')->get();
+        $users = User::role('user')->select('id', 'name')->get();
         return response()->json($users);
     }
 

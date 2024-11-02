@@ -31,13 +31,7 @@
             <p class="nav__menu-text">Меню</p>
             <ul class="nav__menu-list">
                 <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'admin.php') ? 'active' : ''; ?>" href="admin.php">Главная</a>
-                </li>
-                <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'users.php') ? 'active' : ''; ?>" href="users.php">Пользователи</a>
-                </li>
-                <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'reports.php') ? 'active' : ''; ?>" href="reports.php">Отчёты</a>
+                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'projects-tasks.php') ? 'active' : ''; ?>" href="projects-tasks.php">Главная</a>
                 </li>
             </ul>
 

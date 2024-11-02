@@ -33,11 +33,14 @@ class AuthController extends ApiController
                         $redirectUrl = url('http://prj-frontend/admin/users.php');
                         break;
                     case 'manager':
-                        $redirectUrl = url('/manager/dashboard'); // URL для роли manager
+                        $redirectUrl = url('http://prj-frontend/manager/projects-tasks.php'); // URL для роли manager
                         break;
                         // Вы можете добавить другие роли, если это необходимо
+                    case 'user':
+                        $redirectUrl = url('http://prj-frontend/user/projects-tasks.php');
+                        break;
                     default:
-                        $redirectUrl = url('/projects-and-tasks'); // По умолчанию для остальных ролей
+                        $redirectUrl = url('http://prj-frontend/projects-and-tasks'); // По умолчанию для остальных ролей
                         break;
                 }
             }

@@ -12,13 +12,15 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'maintainer_id',
-        'executor_id',
         'title',
         'description',
         'start_date',
         'end_date',
-        'status',
+        'maintainer_id',
+        'executor_id',
+        'priority',
+        'remaining_days',
+        'status', // Добавлено поле status
     ];
 
     protected $casts = [
@@ -26,7 +28,6 @@ class Project extends Model
         'end_date' => 'datetime',
         'status' => 'string',
     ];
-
 
     public function maintainer()
     {
@@ -44,11 +45,25 @@ class Project extends Model
             return 0;
         }
 
+        if (is_null($this->end_date)) {
+            return 0; // Если end_date отсутствует, возвращаем 0
+        }
+
         return Carbon::now()->diffInDays($this->end_date, false);
     }
 
     public function scopeCompleted(Builder $builder)
     {
         return $builder->where('status', 'completed');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($project) {
+            // Обновляем remaining_days перед сохранением
+            $project->remaining_days = $project->days_remaining;
+        });
     }
 }

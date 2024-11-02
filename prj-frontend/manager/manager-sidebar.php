@@ -8,7 +8,7 @@
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>Manager Sidebar</title>
+    <title>Admin Sidebar</title>
     <style>
         .active {
             background-color: black;
@@ -25,19 +25,13 @@
 
     <nav class="nav">
         <div class="nav__logo">
-            <p class="nav__logo-text">Название</p>
+            <p class="nav__logo-text">ProjectManagement</p>
         </div>
         <div class="nav__menu">
             <p class="nav__menu-text">Меню</p>
             <ul class="nav__menu-list">
                 <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'admin.php') ? 'active' : ''; ?>" href="admin.php">Главная</a>
-                </li>
-                <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'users.php') ? 'active' : ''; ?>" href="users.php">Пользователи</a>
-                </li>
-                <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'tasks.php') ? 'active' : ''; ?>" href="tasks.php">Задачи</a>
+                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'projects-tasks.php') ? 'active' : ''; ?>" href="projects-tasks.php">Главная</a>
                 </li>
                 <li class="nav__menu-item">
                     <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'reports.php') ? 'active' : ''; ?>" href="reports.php">Отчёты</a>
