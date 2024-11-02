@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="../styles/user.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
     <script src="../scripts/logout.js" defer></script>
-    <script src="../scripts/project-and-task.js" defer></script>
+    <script src="../scripts/projects.js" defer></script>
+    <script src="../scripts/tasks.js" defer></script>
 </head>
 
 <body>
