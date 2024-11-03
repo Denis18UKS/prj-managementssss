@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="../styles/user.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
     <script src="../scripts/logout.js" defer></script>
-    <script src="../scripts/project-and-task.js" defer></script>
-    <script src="../scripts/project-and-task_for_user.js" defer></script>
+    <script src="../scripts/projects_for_managers.js" defer></script>
+    <script src="../scripts/tasks_for_managers.js" defer></script>
 </head>
 
 <body>
@@ -40,55 +40,44 @@
         </div>
     </div>
 
-
-
-    <!-- Модальное окно создания задачи -->
-    <div id="createTaskModal" class="modal">
+    <!-- Модальное окно редактирования проекта -->
+    <div id="editProjectModal" class="modal">
         <div class="modal-content">
-            <span class="close" id="closeTaskModal">&times;</span>
-            <h2>Создать задачу</h2>
+            <span class="close" id="closeEditProjectModal">&times;</span>
+            <h2>Редактировать проект</h2>
 
-            <!-- Поля ввода для создания задачи -->
-            <input type="text" id="taskName" placeholder="Название задачи" required>
-            <textarea id="taskDescription" placeholder="Описание задачи" rows="4"></textarea>
+            <label for="editProjectName">Название проекта</label>
+            <input disabled type="text" id="editProjectName" placeholder="Название проекта" required>
 
-            <label for="startDate">Дата начала:</label>
-            <input type="date" id="startDate" required>
+            <label for="editProjectDescription">Описание проекта</label>
+            <textarea disabled id="editProjectDescription" placeholder="Описание проекта" rows="4"></textarea>
 
-            <label for="endDate">Дата окончания:</label>
-            <input type="date" id="endDate" required>
+            <label for="editProjectStartDate">Дата начала:</label>
+            <input disabled type="date" id="editProjectStartDate" required>
 
-            <!-- Выпадающий список с проектами -->
-            <label for="#projectSelect">Выберите проект:</label>
-            <select id="projectSelect" required>
-                <!-- Динамически добавляем проекты с помощью JavaScript -->
+            <label for="editProjectEndDate">Дата окончания:</label>
+            <input disabled type="date" id="editProjectEndDate" required>
+
+            <label for="editProjectStatus">Статус проекта</label>
+            <select id="editProjectStatus">
+                <option value="created" disabled>Создан</option>
+                <option value="in_progress">В процессе</option>
+                <option value="completed">Завершён</option>
             </select>
 
-            <button id="confirmCreateTaskBtn">Создать задачу</button>
+            <label for="editProjectManager">Руководители</label>
+            <select disabled id="editProjectManager"></select>
 
-        </div>
-    </div>
+            <label for="editProjectExecutor">Исполнитель:</label>
+            <select id="editProjectExecutor"></select>
 
-    <div id="editTaskModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeEditTaskModal">&times;</span>
-            <h2>Редактировать задачу</h2>
-
-            <input type="text" id="editTaskName" placeholder="Название задачи" required>
-            <textarea id="editTaskDescription" placeholder="Описание задачи" rows="4"></textarea>
-
-            <label for="editTaskStartDate">Дата начала:</label>
-            <input type="date" id="editTaskStartDate" required>
-
-            <label for="editTaskEndDate">Дата окончания:</label>
-            <input type="date" id="editTaskEndDate" required>
-
-            <label for="editTaskProject">Выберите проект:</label>
-            <select id="editTaskProject" required>
-                <!-- Динамически добавляем проекты с помощью JavaScript -->
+            <label for="editProjectPriority">Приоритет</label>
+            <select disabled id="editProjectPriority">
+                <option value="low">Низкий</option>
+                <option value="medium">Средний</option>
+                <option value="high">Высокий</option>
             </select>
-
-            <button id="confirmEditTaskBtn">Сохранить изменения</button>
+            <button id="confirmEditProjectBtn">Сохранить изменения</button>
         </div>
     </div>
 </body>

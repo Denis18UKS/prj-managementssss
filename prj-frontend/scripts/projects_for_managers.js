@@ -24,7 +24,6 @@ $(document).ready(function () {
                             <div class="tasks__card-remaining_days">Осталось дней: ${project.remaining_days}</div>
                             <div id='btns'>
                                 <button class="btn btn-dark edit-project" data-id="${project.id}">Редактировать</button>
-                                <button class="btn btn-danger delete-project" data-id="${project.id}">Удалить</button>
                             </div>
                         </div>
                     `);

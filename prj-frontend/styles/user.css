@@ -763,3 +763,15 @@ button:hover {
     font-style: italic;
     color: #888;
 }
+
+.comments {
+    margin-top: 15px;
+}
+
+.comments-list {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid black; /* или другой стиль по вашему выбору */
+    border-radius: 5px;
+    background-color: #f9f9f9; /* фон для списка комментариев */
+}

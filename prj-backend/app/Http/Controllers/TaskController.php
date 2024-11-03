@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -19,6 +20,12 @@ class TaskController extends Controller
         return response()->json($tasks, 200);
     }
 
+    public function getTasks()
+    {
+        $tasks = Task::select('id', 'title')->get();
+        Log::info('Tasks fetched', ['tasks' => $tasks]);
+        return response()->json($tasks, 200);
+    }
 
     // TaskController.php
     public function updateStatus(Request $request, $id)
