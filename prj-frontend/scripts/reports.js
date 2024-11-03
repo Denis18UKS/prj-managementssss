@@ -10,7 +10,7 @@ $(document).ready(function () {
             method: 'GET',
             success: function (data) {
                 data.forEach(project => {
-                    projectsCache[project.id] = project.title;
+                    projectsCache[project.id_projects] = project.title;
                 });
                 console.log('Projects Cache:', projectsCache);
             },
@@ -26,7 +26,7 @@ $(document).ready(function () {
             method: 'GET',
             success: function (data) {
                 data.forEach(task => {
-                    tasksCache[task.id] = task.title;
+                    tasksCache[task.id_tasks] = task.title;
                 });
                 console.log('Tasks Cache:', tasksCache);
             },
@@ -75,7 +75,7 @@ $(document).ready(function () {
             data: { search: searchTerm },
             dataType: 'json',
             success: function (data) {
-                console.log('Reports Data:', data);
+                // console.log('Reports Data:', data);
                 renderReports(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -98,7 +98,11 @@ $(document).ready(function () {
             console.log('Report Data:', report);
 
             const projectTitle = projectsCache[report.project_id] || 'Не указано';
-            const taskTitle = tasksCache[report.task_id] || 'Не указано';
+            const taskTitle = tasksCache[report.id_tasks] || 'Не указано';
+
+            console.log('Project Title:', projectTitle); // Лог projectTitle
+            console.log('Task Title:', taskTitle);       // Лог taskTitle
+
             const managerName = managersCache[report.maintainer_id] || 'Не указано';
             const executorName = executorsCache[report.executor_id] || 'Не указано';
             const remainingDays = report.remaining_days || 'Не указано';
