@@ -2,6 +2,7 @@ $(document).ready(function () {
     const projectsCache = {};
     const managersCache = {};
     const executorsCache = {};
+    const tasksCache = {};
 
     // Загрузка проектов в кэш
     function loadProjectsIntoCache() {
@@ -80,8 +81,8 @@ $(document).ready(function () {
 
         reports.forEach(report => {
             const projectTitle = projectsCache[report.project_id] || 'Не указано';
-            const taskTitle = report.task_name || 'Не указано';
-            const managerName = managersCache[report.manager_id] || 'Не указано'; // Используем manager_id
+            const taskTitle = tasksCache[report.task_title] || 'Не указано';
+            const managerName = managersCache[report.maintainer_id] || 'Не указано'; // Используем manager_id
             const executorName = executorsCache[report.executor_id] || 'Не указано'; // Используем executor_id
             const remainingDays = report.remaining_days || 'Не указано';
             const status = report.status || 'Не указан';
