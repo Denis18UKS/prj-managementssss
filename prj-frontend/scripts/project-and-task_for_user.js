@@ -23,6 +23,15 @@ $(document).ready(function () {
         return projectsCache[projectId];
     }
 
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+    }
+
     function loadTasks() {
         $.ajax({
             url: 'http://prj-backend/tasks',
@@ -60,8 +69,8 @@ $(document).ready(function () {
                                 <div class="task-project"><h6>Проект: ${projectName || 'Неизвестный проект'}</h6></div>
                                 <div class="task-status"><strong>Статус:</strong> ${task.status}</div>
                                 <div class="task-dates">
-                                    Дата начала: ${task.start_date || 'N/A'}<br>
-                                    Дата окончания: ${task.end_date || 'N/A'}<br>
+                                    Дата начала: ${formatDate(task.start_date)}<br>
+                                    Дата окончания: ${formatDate(task.end_date)}<br>
                                     Осталось дней: ${daysLeft}
                                 </div>
                                 ${taskActions}
@@ -72,7 +81,6 @@ $(document).ready(function () {
                                 <div class="comments">
                                     <h6><b>Комментарии:</b></h6>
                                     <div class="comments-list" id="comments-${task.id}">${commentsSection}</div>
-
                                 </div>
                             </div>
                         `;
