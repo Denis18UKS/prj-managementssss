@@ -1,34 +1,8 @@
-return UserResource::collection(User::all()); - для получения всех пользователей
-
-$project = new Project();
-$project->daysRemaining;
-$project->projectStatus->name;
-
-return $builder->where(
-    'project_status_id',
-    ProjectStatus::query()
-        ->where('name', 'completed')
-        ->first()
-);
-
-
-return ProjectResource::collection(Project::all()); //все
-
-return $this->makeResponse(function () {
-    return ProjectResource::collection(Project::query()
-        ->completed()
-        ->where('maintainer_id', auth()->user()->id)
-        ->where('executor_id', auth()->user()->id)
-        ->get()); //только заврешенные
-});
-
-
-Route::middleware('auth:sanctum')->group(function () {});
-
-доступ к пользователям только админу
-Route::middleware('role:admin')->group(function () {
-    Route::resource('users', UserController::class);
-});
-
-
-// for framework generate pdf -> - PDFDom
+Всё равно выводит так:
+Отчёт № 16
+Проект: Не указано
+Задача: Не указано
+Руководитель: Не указано
+Исполнитель: Не указано
+Осталось: 57 д
+Статус: in_progress

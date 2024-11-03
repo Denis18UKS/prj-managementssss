@@ -6,6 +6,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
@@ -101,5 +102,31 @@ class ProjectController extends Controller
 
         Log::info('Project deleted successfully', ['project_id' => $id]);
         return response()->noContent();
+    }
+
+    // Получение данных для отчёта
+    public function getProjectStatistics()
+    {
+        try {
+            $projects = Project::withCount([
+                'tasks as total_tasks' => function ($query) {
+                    $query->select(DB::raw('count(*)'));
+                },
+                'tasks as in_progress' => function ($query) {
+                    $query->where('status', 'Выполняется');
+                },
+                'tasks as completed' => function ($query) {
+                    $query->where('status', 'Завершена');
+                },
+                'tasks as new' => function ($query) {
+                    $query->where('status', 'Назначена');
+                },
+            ])->get();
+
+            return response()->json($projects);
+        } catch (\Exception $e) {
+            Log::error('Ошибка при получении данных для отчета: ' . $e->getMessage());
+            return response()->json(['error' => 'Не удалось получить данные для отчета. Попробуйте позже.'], 500);
+        }
     }
 }

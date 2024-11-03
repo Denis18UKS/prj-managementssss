@@ -41,6 +41,8 @@ Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 Route::patch('tasks/{id}/status', [TaskController::class, 'updateStatus']);
 
 // Комментарии
-
 Route::get('tasks/{taskId}/comments', [CommentController::class, 'index']);
 Route::post('tasks/{taskId}/comments', [CommentController::class, 'store']);
+
+// Отчёты
+Route::get('reports', [ProjectController::class, 'getProjectStatistics']);

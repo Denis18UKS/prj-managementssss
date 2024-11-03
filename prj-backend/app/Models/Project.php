@@ -39,6 +39,11 @@ class Project extends Model
         return $this->belongsTo(User::class, 'executor_id');
     }
 
+    public function tasks() // Добавленный метод
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public function getDaysRemainingAttribute(): int
     {
         if ($this->status === 'completed') {
