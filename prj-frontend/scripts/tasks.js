@@ -19,6 +19,23 @@ $(document).ready(function () {
         });
     }
 
+    function loadProjectsIntoEditSelect() {
+        $.ajax({
+            url: 'http://prj-backend/getprojects',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#editTaskProject').empty();
+                data.forEach(function (project) {
+                    $('#editTaskProject').append(`<option value="${project.id}">${project.title}</option>`);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка при загрузке проектов:', error);
+            }
+        });
+    }
+
     // Кэширование проектов для быстрого доступа
     function loadProjectsIntoCache() {
         $.ajax({
@@ -86,7 +103,7 @@ $(document).ready(function () {
                 $('#editTaskEndDate').val(task.end_date.split('T')[0]);
                 $('#editTaskProject').val(task.project_id);
 
-                loadProjectsIntoSelect();
+                loadProjectsIntoEditSelect();
 
                 $('#editTaskModal').data('id', taskId).show();
             },
