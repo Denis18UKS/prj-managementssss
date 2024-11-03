@@ -4,7 +4,6 @@ $(document).ready(function () {
     const executorsCache = {};
     const tasksCache = {};
 
-    // Загрузка проектов в кэш
     function loadProjectsIntoCache() {
         return $.ajax({
             url: 'http://prj-backend/getprojects',
@@ -13,6 +12,7 @@ $(document).ready(function () {
                 data.forEach(project => {
                     projectsCache[project.id] = project.title;
                 });
+                console.log('Projects Cache:', projectsCache); // Логирование кэша проектов
             },
             error: function () {
                 console.error('Ошибка при загрузке проектов');
@@ -20,7 +20,22 @@ $(document).ready(function () {
         });
     }
 
-    // Загрузка менеджеров в кэш
+    function loadTasksIntoCache() {
+        return $.ajax({
+            url: 'http://prj-backend/gettasks',
+            method: 'GET',
+            success: function (data) {
+                data.forEach(task => {
+                    tasksCache[task.id] = task.title;
+                });
+                console.log('Tasks Cache:', tasksCache); // Логирование кэша задач
+            },
+            error: function () {
+                console.error('Ошибка при загрузке задач');
+            }
+        });
+    }
+
     function loadManagersIntoCache() {
         return $.ajax({
             url: 'http://prj-backend/managers',
@@ -29,6 +44,7 @@ $(document).ready(function () {
                 data.forEach(manager => {
                     managersCache[manager.id] = manager.name;
                 });
+                console.log('Managers Cache:', managersCache);
             },
             error: function () {
                 console.error('Ошибка при загрузке менеджеров');
@@ -36,7 +52,6 @@ $(document).ready(function () {
         });
     }
 
-    // Загрузка исполнителей в кэш
     function loadExecutorsIntoCache() {
         return $.ajax({
             url: 'http://prj-backend/executors',
@@ -45,6 +60,7 @@ $(document).ready(function () {
                 data.forEach(executor => {
                     executorsCache[executor.id] = executor.name;
                 });
+                console.log('Executors Cache:', executorsCache);
             },
             error: function () {
                 console.error('Ошибка при загрузке исполнителей');
@@ -52,7 +68,6 @@ $(document).ready(function () {
         });
     }
 
-    // Загрузка отчетов
     function loadReports(searchTerm = '') {
         $.ajax({
             url: 'http://prj-backend/reports',
@@ -60,6 +75,7 @@ $(document).ready(function () {
             data: { search: searchTerm },
             dataType: 'json',
             success: function (data) {
+                console.log('Reports Data:', data); // Логирование полученных отчетов
                 renderReports(data); // Отображаем отчеты
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -69,10 +85,9 @@ $(document).ready(function () {
         });
     }
 
-    // Функция отображения отчетов
     function renderReports(reports) {
         const reportsContainer = $('.reports__cards');
-        reportsContainer.empty(); // Очищаем предыдущие отчеты
+        reportsContainer.empty();
 
         if (reports.length === 0) {
             reportsContainer.append('<div class="no-reports">Нет доступных отчетов.</div>');
@@ -80,10 +95,12 @@ $(document).ready(function () {
         }
 
         reports.forEach(report => {
+            console.log('Report Data:', report); // Логирование отчета для проверки данных
+
             const projectTitle = projectsCache[report.project_id] || 'Не указано';
-            const taskTitle = tasksCache[report.task_title] || 'Не указано';
-            const managerName = managersCache[report.maintainer_id] || 'Не указано'; // Используем manager_id
-            const executorName = executorsCache[report.executor_id] || 'Не указано'; // Используем executor_id
+            const taskTitle = tasksCache[report.task_id] || 'Не указано';
+            const managerName = managersCache[report.maintainer_id] || 'Не указано';
+            const executorName = executorsCache[report.executor_id] || 'Не указано';
             const remainingDays = report.remaining_days || 'Не указано';
             const status = report.status || 'Не указан';
 
@@ -98,25 +115,22 @@ $(document).ready(function () {
                     <div class="projects__card-status">Статус: ${status}</div>
                 </div>
             `;
-            reportsContainer.append(reportCard); // Добавляем карточку отчета
+            reportsContainer.append(reportCard);
         });
     }
 
-    // Обработчик события отправки формы поиска
+    Promise.all([
+        loadProjectsIntoCache(),
+        loadManagersIntoCache(),
+        loadExecutorsIntoCache(),
+        loadTasksIntoCache()
+    ]).then(() => {
+        loadReports(); // Загружаем отчеты после загрузки данных
+    });
+
     $('.filter__search').on('submit', function (e) {
-        e.preventDefault(); // Предотвращаем стандартное поведение формы
-        const searchTerm = $(this).find('input[name="search"]').val(); // Получаем значение поля поиска
-        loadReports(searchTerm); // Загружаем отчеты с учетом поискового запроса
+        e.preventDefault();
+        const searchTerm = $(this).find('input[name="search"]').val();
+        loadReports(searchTerm);
     });
-
-    // Обработчик события сброса фильтра
-    $('.filter__reset').on('click', function () {
-        $('input[name="search"]').val(''); // Очищаем поле поиска
-        loadReports(); // Загружаем все отчеты без фильтра
-    });
-
-    // Загрузка данных при первом открытии страницы
-    Promise.all([loadProjectsIntoCache(), loadManagersIntoCache(), loadExecutorsIntoCache()])
-        .then(loadReports)
-        .catch(err => console.error('Ошибка загрузки данных:', err));
 });
