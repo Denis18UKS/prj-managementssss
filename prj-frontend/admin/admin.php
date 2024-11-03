@@ -47,7 +47,11 @@
         <div class="modal-content">
             <span class="close" id="closeEditProjectModal">&times;</span>
             <h2>Редактировать проект</h2>
+
+            <label for="editProjectName">Название проекта</label>
             <input type="text" id="editProjectName" placeholder="Название проекта" required>
+            
+            <label for="editProjectDescription">Описание проекта</label>
             <textarea id="editProjectDescription" placeholder="Описание проекта" rows="4"></textarea>
 
             <label for="editProjectStartDate">Дата начала:</label>
@@ -56,14 +60,17 @@
             <label for="editProjectEndDate">Дата окончания:</label>
             <input type="date" id="editProjectEndDate" required>
 
+            <label for="editProjectStatus">Статус проекта</label>
             <select id="editProjectStatus" disabled>
                 <option value="created">Создан</option>
                 <option value="in_progress">В процессе</option>
                 <option value="completed">Завершён</option>
             </select>
 
+            <label for="editProjectManager">Руководители</label>
             <select id="editProjectManager"></select>
 
+            <label for="editProjectPriority">Приоритет</label>
             <select id="editProjectPriority">
                 <option value="low">Низкий</option>
                 <option value="medium">Средний</option>
@@ -79,7 +86,11 @@
         <div class="modal-content">
             <span class="close" id="closeProjectModal">&times;</span>
             <h2>Создать проект</h2>
+            
+            <label for="projectName">Название проекта</label>
             <input type="text" id="projectName" placeholder="Название проекта" required>
+            
+            <label for="projectDescription">Описание проекта</label>
             <textarea id="projectDescription" placeholder="Описание проекта" rows="4"></textarea>
 
             <label for="startDate">Дата начала:</label>
@@ -88,15 +99,20 @@
             <label for="endDate">Дата окончания:</label>
             <input type="date" id="projectEndDate" required>
 
+            <label for="projectStatus">Статус</label>
             <select id="projectStatus" disabled>
                 <option value="created">Создан</option>
                 <option value="in_progress">В процессе</option>
                 <option value="completed">Завершён</option>
             </select>
 
+            <label for="projectManager">Руководители</label>
             <select id="projectManager"></select>
+            
+            <label for="projectExecutor">Исполнители</label>
             <select id="projectExecutor"></select>
 
+            <label for="projectPriority">Приоритет</label>
             <select id="projectPriority">
                 <option value="low">Низкий</option>
                 <option value="medium">Средний</option>
@@ -113,7 +129,11 @@
             <span class="close" id="closeTaskModal">&times;</span>
             <h2>Создать задачу</h2>
 
+            
+            <label for="taskName">Название задачи:</label>
             <input type="text" id="taskName" placeholder="Название задачи" required>
+
+            <label for="taskDescription">Описание задачи</label>
             <textarea id="taskDescription" placeholder="Описание задачи" rows="4"></textarea>
 
             <label for="startDate">Дата начала:</label>
