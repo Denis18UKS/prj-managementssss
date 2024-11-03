@@ -50,7 +50,7 @@
 
             <label for="editProjectName">Название проекта</label>
             <input type="text" id="editProjectName" placeholder="Название проекта" required>
-            
+
             <label for="editProjectDescription">Описание проекта</label>
             <textarea id="editProjectDescription" placeholder="Описание проекта" rows="4"></textarea>
 
@@ -70,6 +70,9 @@
             <label for="editProjectManager">Руководители</label>
             <select id="editProjectManager"></select>
 
+            <label for="editProjectExecutor">Исполнитель:</label>
+            <select id="editProjectExecutor"></select>
+
             <label for="editProjectPriority">Приоритет</label>
             <select id="editProjectPriority">
                 <option value="low">Низкий</option>
@@ -86,10 +89,10 @@
         <div class="modal-content">
             <span class="close" id="closeProjectModal">&times;</span>
             <h2>Создать проект</h2>
-            
+
             <label for="projectName">Название проекта</label>
             <input type="text" id="projectName" placeholder="Название проекта" required>
-            
+
             <label for="projectDescription">Описание проекта</label>
             <textarea id="projectDescription" placeholder="Описание проекта" rows="4"></textarea>
 
@@ -108,7 +111,7 @@
 
             <label for="projectManager">Руководители</label>
             <select id="projectManager"></select>
-            
+
             <label for="projectExecutor">Исполнители</label>
             <select id="projectExecutor"></select>
 
@@ -129,7 +132,7 @@
             <span class="close" id="closeTaskModal">&times;</span>
             <h2>Создать задачу</h2>
 
-            
+
             <label for="taskName">Название задачи:</label>
             <input type="text" id="taskName" placeholder="Название задачи" required>
 
