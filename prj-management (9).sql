@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 02 2024 г., 07:09
+-- Время создания: Ноя 04 2024 г., 00:12
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -34,6 +34,20 @@ CREATE TABLE `comments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `comments`
+--
+
+INSERT INTO `comments` (`id`, `task_id`, `comment`, `created_at`, `updated_at`) VALUES
+(4, 10, 'dwdwwd', '2024-11-03 09:07:21', '2024-11-03 09:07:21'),
+(5, 1, 'dwdwdw', '2024-11-03 09:10:29', '2024-11-03 09:10:29'),
+(6, 6, 'dwdwdw', '2024-11-03 09:10:36', '2024-11-03 09:10:36'),
+(7, 10, 'swsws', '2024-11-03 09:10:42', '2024-11-03 09:10:42'),
+(8, 10, 'wswsw', '2024-11-03 09:10:47', '2024-11-03 09:10:47'),
+(9, 6, 'dwdasdw', '2024-11-03 09:10:52', '2024-11-03 09:10:52'),
+(10, 10, 'вц', '2024-11-03 10:17:24', '2024-11-03 10:17:24'),
+(11, 15, 'ввцвцвц', '2024-11-03 10:19:21', '2024-11-03 10:19:21');
 
 -- --------------------------------------------------------
 
@@ -76,7 +90,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (16, '2024_10_23_143222_create_projects_table', 1),
 (17, '2024_10_29_083724_create_tasks_table', 1),
 (18, '2024_10_29_200841_add_priority_to_projects_table', 2),
-(19, '2024_10_31_192501_create_comments_table', 3);
+(22, '2024_10_31_192501_create_comments_table', 3),
+(23, '2024_11_03_081444_create_reports_table', 3);
 
 -- --------------------------------------------------------
 
@@ -184,9 +199,10 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `maintainer_id`, `executor_id`, `title`, `description`, `start_date`, `end_date`, `status`, `priority`, `remaining_days`, `created_at`, `updated_at`) VALUES
-(2, 2, 4, 'dwdwdw', 'dwdwdwdw', '2024-10-12', '2024-12-12', 'created', 'low', 39, '2024-11-02 01:04:44', '2024-11-02 01:04:44'),
-(3, 2, 4, 'wddwdw', 'dwdwdwdw', '2024-11-02', '2024-11-22', 'created', 'medium', 19, '2024-11-02 01:06:56', '2024-11-02 01:07:28'),
-(4, 2, 4, 'wddwdwdwdwwddwdw', 'dwdwdwdw', '2024-11-02', '2024-11-06', 'created', 'high', 3, '2024-11-02 01:07:43', '2024-11-02 01:07:43');
+(2, 2, 4, 'proect #1', 'proect #1proect #1proect #1', '2024-10-12', '2024-12-12', 'completed', 'low', 0, '2024-11-02 01:04:44', '2024-11-03 18:07:07'),
+(3, 2, 4, 'proect #2', 'proect #2proect #2proect #2', '2024-11-02', '2024-11-22', 'created', 'medium', 18, '2024-11-02 01:06:56', '2024-11-03 05:03:11'),
+(4, 2, 4, 'proect #3', 'proect #3proect #3proect #3proect #3proect #3', '2024-11-02', '2024-11-06', 'created', 'high', 2, '2024-11-02 01:07:43', '2024-11-03 11:30:02'),
+(16, 2, 5, 'proect #4', 'proect #4proect #4proect #4proect #4proect #4', '2024-11-03', '2024-12-31', 'in_progress', 'low', 57, '2024-11-03 11:17:38', '2024-11-03 14:07:23');
 
 -- --------------------------------------------------------
 
@@ -236,12 +252,10 @@ CREATE TABLE `tasks` (
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `project_id` bigint UNSIGNED DEFAULT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
   `priority` enum('Низкий','Средний','Высокий') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `status` enum('Назначена','Выполняется','Завершена') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `days_left` int NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -250,8 +264,11 @@ CREATE TABLE `tasks` (
 -- Дамп данных таблицы `tasks`
 --
 
-INSERT INTO `tasks` (`id`, `title`, `description`, `project_id`, `user_id`, `priority`, `start_date`, `end_date`, `status`, `days_left`, `created_at`, `updated_at`) VALUES
-(1, 'вцвцвц', 'вцвцвцвц', 2, NULL, 'Низкий', '2024-11-15', '2024-11-29', 'Назначена', 0, '2024-11-02 01:08:58', '2024-11-02 01:08:58');
+INSERT INTO `tasks` (`id`, `title`, `description`, `project_id`, `priority`, `start_date`, `end_date`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'вцвцвц', 'вцвцвцвц', 2, 'Низкий', '2024-11-15', '2024-11-29', 'Завершена', '2024-11-02 01:08:58', '2024-11-03 01:42:59'),
+(6, '1w21', 'dwwdwa', 3, 'Низкий', '2024-12-11', '2024-12-12', 'Завершена', '2024-11-02 14:26:19', '2024-11-03 02:59:43'),
+(10, 'цвцвц', 'цвцвц', 4, 'Низкий', '2024-12-12', '2024-12-14', 'Выполняется', '2024-11-03 03:00:21', '2024-11-03 09:14:28'),
+(15, 'цввццвцв', 'вцввццвцв', 16, 'Низкий', '2024-10-13', '2024-12-08', 'Назначена', '2024-11-03 10:18:39', '2024-11-03 11:19:02');
 
 -- --------------------------------------------------------
 
@@ -275,11 +292,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Денис', 'honorxpremium75@gmail.com', NULL, '$2y$12$CCsO3x3GfrDHFvgITnWDweZgMqTjDkPO8RMIRvRpDON3m2h42/diq', NULL, '2024-11-02 00:32:31', '2024-11-02 00:32:31'),
-(2, 'Максим', 'lakos208@gmail.com', NULL, '$2y$12$JBZdMWF8PrInN/cfDvs/cuKfazBj9ftTRwYN5Q8.D6PSuMwOdOquu', NULL, '2024-11-02 00:32:42', '2024-11-02 00:32:42'),
-(3, 'Александр', 'Aleksand@gmail.ru', NULL, '$2y$12$Hz4ToR8QPv0Oao9IsXoBVODGzRNSxEO5v92JzGyOBO7l027gqb11e', NULL, '2024-11-02 00:32:52', '2024-11-02 00:32:52'),
-(4, 'Никита', 'den.karpov471@gmail.com', NULL, '$2y$12$Lx175NhdQW9lJbum0GaJzOGEFZQCpibt4e9kflCy2Fz6CWXFzB7jS', NULL, '2024-11-02 00:33:06', '2024-11-02 00:33:06'),
-(5, 'Олег', 'subscribe@mail.ru', NULL, '$2y$12$wyD5q/HmcZfGj8pEvPB9f.IJmjo9hfHdcOio3GW7dnVZy2yjIkmki', NULL, '2024-11-02 00:33:24', '2024-11-02 00:33:24');
+(1, 'Денис', 'honorxpremium75@gmail.com', NULL, '$2y$12$CCsO3x3GfrDHFvgITnWDweZgMqTjDkPO8RMIRvRpDON3m2h42/diq', 'bZtuxc1S61y0ASYpNo09y6YS80YONZOBHuGmVd7P8p7OmXPshKzEso3j40lV', '2024-11-02 00:32:31', '2024-11-02 00:32:31'),
+(2, 'Максим', 'lakos208@gmail.com', NULL, '$2y$12$JBZdMWF8PrInN/cfDvs/cuKfazBj9ftTRwYN5Q8.D6PSuMwOdOquu', 'YQh0Gj7jItYZKKUYnhD2D2DXDYkYteQpo3AQVYdnUuYv15t6S7iXB1PWYfG3', '2024-11-02 00:32:42', '2024-11-02 00:32:42'),
+(3, 'Александр', 'Aleksand@gmail.ru', NULL, '$2y$12$Hz4ToR8QPv0Oao9IsXoBVODGzRNSxEO5v92JzGyOBO7l027gqb11e', '53Lt8i6eER0hUPpa5nCHXhp5UmFEQj1ZfcQ5GKPhAFBFw8zzX1OCTNLly7Gl', '2024-11-02 00:32:52', '2024-11-02 00:32:52'),
+(4, 'Никита', 'den.karpov471@gmail.com', NULL, '$2y$12$Lx175NhdQW9lJbum0GaJzOGEFZQCpibt4e9kflCy2Fz6CWXFzB7jS', 'r7KIUHQMuPIwM3cUr3EIVdl1m1ODrVvLPYgahvSjV1ITHkHchOmXKbYww45V', '2024-11-02 00:33:06', '2024-11-02 00:33:06'),
+(5, 'Олег', 'subscribe@mail.ru', NULL, '$2y$12$wyD5q/HmcZfGj8pEvPB9f.IJmjo9hfHdcOio3GW7dnVZy2yjIkmki', '1teBa8sN6rvjs1MARK64Ltol7qoFylnokvl9JDpLZsmfFUtYFhPc7Ji7qeGF', '2024-11-02 00:33:24', '2024-11-02 00:33:24');
 
 --
 -- Индексы сохранённых таблиц
@@ -368,8 +385,7 @@ ALTER TABLE `role_has_permissions`
 --
 ALTER TABLE `tasks`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `tasks_project_id_foreign` (`project_id`),
-  ADD KEY `tasks_user_id_foreign` (`user_id`);
+  ADD KEY `tasks_project_id_foreign` (`project_id`);
 
 --
 -- Индексы таблицы `users`
@@ -386,7 +402,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `failed_jobs`
@@ -398,7 +414,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT для таблицы `permissions`
@@ -416,7 +432,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT для таблицы `roles`
@@ -428,13 +444,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -476,8 +492,7 @@ ALTER TABLE `role_has_permissions`
 -- Ограничения внешнего ключа таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  ADD CONSTRAINT `tasks_project_id_foreign` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `tasks_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `tasks_project_id_foreign` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
