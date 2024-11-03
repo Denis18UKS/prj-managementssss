@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <?php include 'admin-sidebar.php'; ?> <!-- Включаем навигационную панель -->
+    <?php include 'manager-sidebar.php'; ?> <!-- Включаем навигационную панель -->
 
     <div class="container">
         <div class="filter">

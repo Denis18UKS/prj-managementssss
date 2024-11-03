@@ -33,6 +33,14 @@ $(document).ready(function () {
     }
 
     function loadTasks() {
+
+        const userId = localStorage.getItem('userId');
+
+        if (!userId) {
+            alert('Ошибка: пользователь не авторизован');
+            return;
+        }
+
         $.ajax({
             url: 'http://prj-backend/tasks',
             method: 'GET',
