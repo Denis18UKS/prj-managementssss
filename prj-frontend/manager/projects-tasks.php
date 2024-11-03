@@ -59,8 +59,8 @@
             <input disabled type="date" id="editProjectEndDate" required>
 
             <label for="editProjectStatus">Статус проекта</label>
-            <select id="editProjectStatus" disabled>
-                <option value="created">Создан</option>
+            <select id="editProjectStatus">
+                <option value="created" disabled>Создан</option>
                 <option value="in_progress">В процессе</option>
                 <option value="completed">Завершён</option>
             </select>
