@@ -67,7 +67,6 @@ $(document).ready(function () {
                     <p>Дней осталось: ${task.days_left}</p>
                     <p>Период: ${task.start_date} - ${task.end_date}</p>
                     <p>Проект: ${projectsCache[task.project_id]}</p>
-                    <p>Исполнитель: ${task.executor_name}</p>
                     <button class="edit-task" data-id="${task.id}">Редактировать</button>
                     <button class="delete-task" data-id="${task.id}">Удалить</button>
                 </div>
