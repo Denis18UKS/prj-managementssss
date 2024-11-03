@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/user.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-    <script src="../scripts/admin.js" defer></script>
+    <script src="../scripts/reports.js" defer></script>
 </head>
 
 <body>
@@ -28,10 +28,6 @@
                 </button>
             </form>
             <button class="filter__reset">Сбросить</button>
-            <div class="notifications">
-                <img class="notifications-top" src="../images/notofication-top.svg" alt="">
-                <img class="notifications-bottom" src="../images/notification-bottom.svg" alt="">
-            </div>
         </div>
     </div>
 
@@ -39,13 +35,6 @@
         <section class="reports">
             <h2 class="title">Мои Отчеты</h2>
             <div class="reports__cards">
-                <div class="reports__card">
-                    <div class="projects__card-title">Отчёт № 1</div>
-                    <div class="projects__card-manager">Проект :</div>
-                    <div class="projects__card-manager">Задача :</div>
-                    <div class="projects__card-time">Осталось: <span class="tasks__card-time-value">10</span>д</div>
-                    <div class="projects__card-status">Статус</div>
-                </div>
             </div>
         </section>
     </div>
