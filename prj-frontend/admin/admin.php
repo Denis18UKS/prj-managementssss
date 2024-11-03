@@ -56,7 +56,7 @@
             <label for="editProjectEndDate">Дата окончания:</label>
             <input type="date" id="editProjectEndDate" required>
 
-            <select id="editProjectStatus">
+            <select id="editProjectStatus" disabled>
                 <option value="created">Создан</option>
                 <option value="in_progress">В процессе</option>
                 <option value="completed">Завершён</option>
@@ -88,7 +88,7 @@
             <label for="endDate">Дата окончания:</label>
             <input type="date" id="projectEndDate" required>
 
-            <select id="projectStatus">
+            <select id="projectStatus" disabled>
                 <option value="created">Создан</option>
                 <option value="in_progress">В процессе</option>
                 <option value="completed">Завершён</option>
