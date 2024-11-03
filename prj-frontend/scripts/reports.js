@@ -12,7 +12,7 @@ $(document).ready(function () {
                 data.forEach(project => {
                     projectsCache[project.id] = project.title;
                 });
-                console.log('Projects Cache:', projectsCache); // Логирование кэша проектов
+                console.log('Projects Cache:', projectsCache);
             },
             error: function () {
                 console.error('Ошибка при загрузке проектов');
@@ -28,7 +28,7 @@ $(document).ready(function () {
                 data.forEach(task => {
                     tasksCache[task.id] = task.title;
                 });
-                console.log('Tasks Cache:', tasksCache); // Логирование кэша задач
+                console.log('Tasks Cache:', tasksCache);
             },
             error: function () {
                 console.error('Ошибка при загрузке задач');
@@ -75,8 +75,8 @@ $(document).ready(function () {
             data: { search: searchTerm },
             dataType: 'json',
             success: function (data) {
-                console.log('Reports Data:', data); // Логирование полученных отчетов
-                renderReports(data); // Отображаем отчеты
+                console.log('Reports Data:', data);
+                renderReports(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Ошибка при загрузке отчетов:', textStatus, errorThrown);
@@ -95,7 +95,7 @@ $(document).ready(function () {
         }
 
         reports.forEach(report => {
-            console.log('Report Data:', report); // Логирование отчета для проверки данных
+            console.log('Report Data:', report);
 
             const projectTitle = projectsCache[report.project_id] || 'Не указано';
             const taskTitle = tasksCache[report.task_id] || 'Не указано';
@@ -125,7 +125,7 @@ $(document).ready(function () {
         loadExecutorsIntoCache(),
         loadTasksIntoCache()
     ]).then(() => {
-        loadReports(); // Загружаем отчеты после загрузки данных
+        loadReports();
     });
 
     $('.filter__search').on('submit', function (e) {
