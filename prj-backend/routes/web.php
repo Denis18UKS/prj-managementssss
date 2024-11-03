@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/users', [UserController::class, 'index']);
 
@@ -38,3 +39,8 @@ Route::put('/tasks/{id}', [TaskController::class, 'update']);
 Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 
 Route::patch('tasks/{id}/status', [TaskController::class, 'updateStatus']);
+
+// Комментарии
+
+Route::get('tasks/{taskId}/comments', [CommentController::class, 'index']);
+Route::post('tasks/{taskId}/comments', [CommentController::class, 'store']);

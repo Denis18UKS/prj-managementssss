@@ -51,7 +51,10 @@ $(document).ready(function () {
                             </div>
                         `;
                     }
-    
+
+                    // Загрузка комментариев для задачи
+                    const commentsSection = loadComments(task.id);
+                    
                     const taskCard = `
                         <div class="task-card" data-id="${task.id}">
                             <div class="task-title">Название: ${task.title}</div>
@@ -64,6 +67,12 @@ $(document).ready(function () {
                                 Осталось дней: ${daysLeft}
                             </div>
                             ${taskActions}
+                            <div class="comments">
+                                <h6>Комментарии:</h6>
+                                <div class="comments-list" id="comments-${task.id}">${commentsSection}</div>
+                                <textarea id="comment-input-${task.id}" placeholder="Введите комментарий"></textarea>
+                                <button class="btn btn-primary add-comment" data-task-id="${task.id}">Добавить комментарий</button>
+                            </div>
                         </div>
                     `;
                     taskList.append(taskCard);
@@ -77,13 +86,57 @@ $(document).ready(function () {
                 $('.finish-task').on('click', function () {
                     updateTaskStatus($(this).data('id'), 'Завершена');
                 });
+
+                // Привязываем действия к кнопкам добавления комментариев
+                $('.add-comment').on('click', function () {
+                    const taskId = $(this).data('task-id');
+                    const comment = $(`#comment-input-${taskId}`).val();
+                    addComment(taskId, comment);
+                });
             },
             error: function (xhr, status, error) {
                 console.error('Ошибка при загрузке задач:', error);
             }
         });
     }
-    
+
+    function loadComments(taskId) {
+        let commentsHtml = '';
+        $.ajax({
+            url: `http://prj-backend/tasks/${taskId}/comments`,
+            method: 'GET',
+            async: false, // Установим в false, чтобы дождаться завершения перед загрузкой
+            success: function (comments) {
+                comments.forEach(comment => {
+                    commentsHtml += `<div class="comment">${comment.comment}</div>`;
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Ошибка при загрузке комментариев:', error);
+            }
+        });
+        return commentsHtml;
+    }
+
+    function addComment(taskId, comment) {
+        if (!comment) {
+            alert('Введите комментарий.');
+            return;
+        }
+        
+        $.ajax({
+            url: `http://prj-backend/tasks/${taskId}/comments`,
+            method: 'POST',
+            data: { comment: comment },
+            success: function (response) {
+                alert(response.message);
+                loadTasks(); // Перезагружаем задачи, чтобы отобразить обновленные комментарии
+            },
+            error: function (xhr, status, error) {
+                console.error('Ошибка при добавлении комментария:', error);
+            }
+        });
+    }
 
     function updateTaskStatus(taskId, newStatus) {
         $.ajax({
