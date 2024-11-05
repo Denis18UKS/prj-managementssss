@@ -3,6 +3,8 @@ $(document).ready(function () {
     const managersCache = {};
     const executorsCache = {};
     const tasksCache = {};
+    let completedTasksCount = 0;
+    let incompleteTasksCount = 0;
 
     function loadProjectsIntoCache() {
         return $.ajax({
@@ -10,9 +12,8 @@ $(document).ready(function () {
             method: 'GET',
             success: function (data) {
                 data.forEach(project => {
-                    projectsCache[project.id_projects] = project.title;
+                    projectsCache[project.id_projects] = { title: project.title, taskCount: 0 };
                 });
-                console.log('Projects Cache:', projectsCache);
             },
             error: function () {
                 console.error('Ошибка при загрузке проектов');
@@ -26,15 +27,25 @@ $(document).ready(function () {
             method: 'GET',
             success: function (data) {
                 data.forEach(task => {
-                    tasksCache[task.id_tasks] = task.title;
+                    tasksCache[task.id_tasks] = task;
+
+                    if (task.project_id) {
+                        if (!projectsCache[task.project_id]) {
+                            projectsCache[task.project_id] = { title: 'Неизвестный проект', taskCount: 0 };
+                        }
+                        projectsCache[task.project_id].taskCount++;
+                    } else {
+                        console.warn('Task without project_id:', task);
+                        // Обработка задачи без project_id, например, добавление в отдельный список
+                    }
                 });
-                console.log('Tasks Cache:', tasksCache);
             },
             error: function () {
                 console.error('Ошибка при загрузке задач');
             }
         });
     }
+
 
     function loadManagersIntoCache() {
         return $.ajax({
@@ -44,7 +55,6 @@ $(document).ready(function () {
                 data.forEach(manager => {
                     managersCache[manager.id] = manager.name;
                 });
-                console.log('Managers Cache:', managersCache);
             },
             error: function () {
                 console.error('Ошибка при загрузке менеджеров');
@@ -60,7 +70,6 @@ $(document).ready(function () {
                 data.forEach(executor => {
                     executorsCache[executor.id] = executor.name;
                 });
-                console.log('Executors Cache:', executorsCache);
             },
             error: function () {
                 console.error('Ошибка при загрузке исполнителей');
@@ -68,15 +77,14 @@ $(document).ready(function () {
         });
     }
 
-    function loadReports(searchTerm = '') {
+    function loadReports(searchTerm = '', statusFilter = 'all') {
         $.ajax({
             url: 'http://prj-backend/reports',
             type: 'GET',
-            data: { search: searchTerm },
+            data: { search: searchTerm, status: statusFilter },
             dataType: 'json',
             success: function (data) {
-                // console.log('Reports Data:', data);
-                renderReports(data);
+                renderReports(data, statusFilter);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Ошибка при загрузке отчетов:', textStatus, errorThrown);
@@ -85,7 +93,7 @@ $(document).ready(function () {
         });
     }
 
-    function renderReports(reports) {
+    function renderReports(reports, statusFilter) {
         const reportsContainer = $('.reports__cards');
         reportsContainer.empty();
 
@@ -95,24 +103,24 @@ $(document).ready(function () {
         }
 
         reports.forEach(report => {
-            console.log('Report Data:', report);
-
-            const projectTitle = projectsCache[report.project_id] || 'Не указано';
-            const taskTitle = tasksCache[report.id_tasks] || 'Не указано';
-
-            console.log('Project Title:', projectTitle); // Лог projectTitle
-            console.log('Task Title:', taskTitle);       // Лог taskTitle
-
+            const projectTitle = projectsCache[report.project_id]?.title || 'Не указано';
+            const task = tasksCache[report.id_tasks] || { title: 'Не указано', status: 'Неизвестен' };
+            const taskCount = projectsCache[report.project_id]?.taskCount || 0;
             const managerName = managersCache[report.maintainer_id] || 'Не указано';
             const executorName = executorsCache[report.executor_id] || 'Не указано';
             const remainingDays = report.remaining_days || 'Не указано';
             const status = report.status || 'Не указан';
 
+            // Проверка фильтрации статуса
+            if (statusFilter !== 'all' && task.status !== statusFilter) {
+                return; // Пропуск задачи, если она не соответствует фильтру
+            }
+
             const reportCard = `
                 <div class="reports__card">
                     <div class="projects__card-title">Отчёт № ${report.id}</div>
-                    <div class="projects__card-manager">Проект: ${projectTitle}</div>
-                    <div class="projects__card-task">Задача: ${taskTitle}</div>
+                    <div class="projects__card-manager">Проект: ${projectTitle} (Задач: ${taskCount})</div>
+                    <div class="projects__card-task">Задача: ${task.title}</div>
                     <div class="projects__card-managers">Руководитель: ${managerName}</div>
                     <div class="projects__card-executor">Исполнитель: ${executorName}</div>
                     <div class="projects__card-time">Осталось: <span class="tasks__card-time-value">${remainingDays}</span> д</div>
@@ -121,6 +129,11 @@ $(document).ready(function () {
             `;
             reportsContainer.append(reportCard);
         });
+
+        // Вывод статистики задач
+        $('.tasks__count').text(`Всего задач: ${Object.keys(tasksCache).length}`);
+        $('.tasks__completed-count').text(`Завершено: ${completedTasksCount}`);
+        $('.tasks__incomplete-count').text(`Не завершено: ${incompleteTasksCount}`);
     }
 
     Promise.all([
@@ -136,5 +149,10 @@ $(document).ready(function () {
         e.preventDefault();
         const searchTerm = $(this).find('input[name="search"]').val();
         loadReports(searchTerm);
+    });
+
+    $('.filter__status').on('change', function () {
+        const statusFilter = $(this).val();
+        loadReports('', statusFilter);
     });
 });

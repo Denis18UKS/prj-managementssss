@@ -70,8 +70,8 @@ $(document).ready(function () {
 
             const taskCard = `
                 <div class="task-card">
-                    <h3>${task.title}</h3>
-                    <p>${task.description}</p>
+                    <h3>Название: ${task.title}</h3>
+                    <p>Описание: ${task.description}</p>
                     <p>Приоритет: ${task.priority}</p>
                     <p>Статус: ${task.status}</p>
                     <p>Дней осталось: ${task.days_left}</p>

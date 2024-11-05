@@ -13,7 +13,7 @@ class ProjectController extends Controller
     public function index()
     {
         Log::info('Fetching all projects');
-        $projects = Project::with(['maintainer', 'executor'])->get();
+        $projects = Project::with(['maintainer', 'executor', 'tasks'])->get();
         Log::info('Projects fetched successfully', ['count' => $projects->count()]);
         return $projects;
     }

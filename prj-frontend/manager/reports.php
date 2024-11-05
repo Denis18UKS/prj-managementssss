@@ -15,6 +15,7 @@
     <?php include 'manager-sidebar.php'; ?> <!-- Включаем навигационную панель -->
 
 
+
     <div class="container">
         <div class="filter">
             <form class="filter__search" action="" method="get">
@@ -29,9 +30,16 @@
             </form>
             <button class="filter__reset">Сбросить</button>
         </div>
+
+
     </div>
 
     <div class="container">
+        <select class="filter__status">
+            <option value="all">Все</option>
+            <option value="завершена">Завершённые</option>
+            <option value="незавершена">Незавершённые</option>
+        </select>
         <section class="reports">
             <h2 class="title">Мои Отчеты</h2>
             <div class="reports__cards">

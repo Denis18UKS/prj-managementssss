@@ -13,12 +13,12 @@ $(document).ready(function () {
 
                     $('.tasks__cards').append(`
                         <div class="tasks__card ${project.priority}">
-                            <div class="tasks__card-title">${project.title}</div>
-                            <div class="tasks__card-description">${project.description}</div>
+                            <div class="tasks__card-title">Название: ${project.title}</div>
+                            <div class="tasks__card-description">Описание: ${project.description}</div>
                             <div class="tasks__card-start">Дата начала: ${startDate}</div>
                             <div class="tasks__card-end">Дата окончания: ${endDate}</div>
-                            <div class="tasks__card-manager">Руководитель: ${project.maintainer.name}</div>
-                            <div class="tasks__card-executor">Исполнитель: ${project.executor.name}</div>
+                <div class="tasks__card-manager">Руководитель: ${project.maintainer ? project.maintainer.name : 'Не назначен'}</div>
+                <div class="tasks__card-executor">Исполнитель: ${project.executor ? project.executor.name : 'Не назначен'}</div>
                             <div class="tasks__card-priority">Приоритет: ${project.priority}</div>
                             <div class="tasks__card-status">Статус: ${project.status}</div>
                             <div class="tasks__card-remaining_days">Осталось дней: ${project.remaining_days}</div>
