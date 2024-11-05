@@ -82,17 +82,17 @@ $(document).ready(function () {
         }
 
         reports.forEach(report => {
-            const projectTitle = report.project_id && projectsCache[report.project_id] 
-                ? projectsCache[report.project_id].title 
+            const projectTitle = report.id && projectsCache[report.id]
+                ? projectsCache[report.id]
                 : 'Проект не указан';
 
-            const taskId = report.id_tasks;
-            const task = taskId && tasksCache[taskId] 
-                ? tasksCache[taskId] 
+            const taskId = report.id;
+            const task = taskId && tasksCache[taskId]
+                ? tasksCache[taskId]
                 : { title: 'Задача не указана', status: 'Неизвестен' };
 
-            const taskCount = report.project_id && projectsCache[report.project_id] 
-                ? projectsCache[report.project_id].taskCount 
+            const taskCount = report.project_id && projectsCache[report.project_id]
+                ? projectsCache[report.id].taskCount
                 : 0;
 
             const managerName = managersCache[report.maintainer_id] || 'Не указано';
