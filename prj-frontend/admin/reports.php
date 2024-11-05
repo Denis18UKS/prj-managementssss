@@ -29,6 +29,12 @@
             </form>
             <button class="filter__reset">Сбросить</button>
         </div>
+
+        <select class="filter__status">
+            <option value="all">Все</option>
+            <option value="завершена">Завершённые</option>
+            <option value="незавершена">Незавершённые</option>
+        </select>
     </div>
 
     <div class="container">

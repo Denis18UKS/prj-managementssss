@@ -6,17 +6,18 @@ $(document).ready(function () {
     let completedTasksCount = 0;
     let incompleteTasksCount = 0;
 
-    function loadProjectsIntoCache() {
+    function loadIntoCache(url, cache) {
         return $.ajax({
-            url: 'http://prj-backend/getprojects',
+            url: url,
             method: 'GET',
             success: function (data) {
-                data.forEach(project => {
-                    projectsCache[project.id_projects] = { title: project.title, taskCount: 0 };
+                data.forEach(item => {
+                    cache[item.id] = item.name || item.title;
                 });
+                console.log(`Данные из ${url} успешно загружены:`, cache);
             },
             error: function () {
-                console.error('Ошибка при загрузке проектов');
+                console.error(`Ошибка при загрузке из ${url}`);
             }
         });
     }
@@ -26,53 +27,31 @@ $(document).ready(function () {
             url: 'http://prj-backend/gettasks',
             method: 'GET',
             success: function (data) {
+                completedTasksCount = 0;
+                incompleteTasksCount = 0;
                 data.forEach(task => {
-                    tasksCache[task.id_tasks] = task;
+                    if (task.id_tasks) { // Проверка на существование id_tasks
+                        tasksCache[task.id_tasks] = task;
 
-                    if (task.project_id) {
-                        if (!projectsCache[task.project_id]) {
-                            projectsCache[task.project_id] = { title: 'Неизвестный проект', taskCount: 0 };
+                        if (task.project_id) {
+                            if (!projectsCache[task.project_id]) {
+                                projectsCache[task.project_id] = { title: 'Неизвестный проект', taskCount: 0 };
+                            }
+                            projectsCache[task.project_id].taskCount++;
                         }
-                        projectsCache[task.project_id].taskCount++;
-                    } else {
-                        console.warn('Task without project_id:', task);
-                        // Обработка задачи без project_id, например, добавление в отдельный список
+
+                        if (task.status === 'Завершена') {
+                            completedTasksCount++;
+                        } else {
+                            incompleteTasksCount++;
+                        }
                     }
                 });
+                console.log('Задачи успешно загружены:', tasksCache);
+                console.log(`Завершенные задачи: ${completedTasksCount}, Незавершенные задачи: ${incompleteTasksCount}`);
             },
             error: function () {
                 console.error('Ошибка при загрузке задач');
-            }
-        });
-    }
-
-
-    function loadManagersIntoCache() {
-        return $.ajax({
-            url: 'http://prj-backend/managers',
-            method: 'GET',
-            success: function (data) {
-                data.forEach(manager => {
-                    managersCache[manager.id] = manager.name;
-                });
-            },
-            error: function () {
-                console.error('Ошибка при загрузке менеджеров');
-            }
-        });
-    }
-
-    function loadExecutorsIntoCache() {
-        return $.ajax({
-            url: 'http://prj-backend/executors',
-            method: 'GET',
-            success: function (data) {
-                data.forEach(executor => {
-                    executorsCache[executor.id] = executor.name;
-                });
-            },
-            error: function () {
-                console.error('Ошибка при загрузке исполнителей');
             }
         });
     }
@@ -103,27 +82,46 @@ $(document).ready(function () {
         }
 
         reports.forEach(report => {
-            const projectTitle = projectsCache[report.project_id]?.title || 'Не указано';
-            const task = tasksCache[report.id_tasks] || { title: 'Не указано', status: 'Неизвестен' };
-            const taskCount = projectsCache[report.project_id]?.taskCount || 0;
+            const projectTitle = report.project_id && projectsCache[report.project_id] 
+                ? projectsCache[report.project_id].title 
+                : 'Проект не указан';
+
+            const taskId = report.id_tasks;
+            const task = taskId && tasksCache[taskId] 
+                ? tasksCache[taskId] 
+                : { title: 'Задача не указана', status: 'Неизвестен' };
+
+            const taskCount = report.project_id && projectsCache[report.project_id] 
+                ? projectsCache[report.project_id].taskCount 
+                : 0;
+
             const managerName = managersCache[report.maintainer_id] || 'Не указано';
             const executorName = executorsCache[report.executor_id] || 'Не указано';
             const remainingDays = report.remaining_days || 'Не указано';
             const status = report.status || 'Не указан';
 
-            // Проверка фильтрации статуса
             if (statusFilter !== 'all' && task.status !== statusFilter) {
-                return; // Пропуск задачи, если она не соответствует фильтру
+                return;
             }
 
             const reportCard = `
                 <div class="reports__card">
                     <div class="projects__card-title">Отчёт № ${report.id}</div>
+                    <hr>
                     <div class="projects__card-manager">Проект: ${projectTitle} (Задач: ${taskCount})</div>
+                    <hr>
                     <div class="projects__card-task">Задача: ${task.title}</div>
+                    <hr>
+                    <div class="projects__card-task">Завершенные задачи: ${completedTasksCount}</div>
+                    <hr>
+                    <div class="projects__card-task">Незавершенные задачи: ${incompleteTasksCount}</div>
+                    <hr>
                     <div class="projects__card-managers">Руководитель: ${managerName}</div>
+                    <hr>
                     <div class="projects__card-executor">Исполнитель: ${executorName}</div>
+                    <hr>
                     <div class="projects__card-time">Осталось: <span class="tasks__card-time-value">${remainingDays}</span> д</div>
+                    <hr>
                     <div class="projects__card-status">Статус: ${status}</div>
                 </div>
             `;
@@ -137,22 +135,34 @@ $(document).ready(function () {
     }
 
     Promise.all([
-        loadProjectsIntoCache(),
-        loadManagersIntoCache(),
-        loadExecutorsIntoCache(),
+        loadIntoCache('http://prj-backend/getprojects', projectsCache),
+        loadIntoCache('http://prj-backend/managers', managersCache),
+        loadIntoCache('http://prj-backend/executors', executorsCache),
         loadTasksIntoCache()
     ]).then(() => {
+        console.log('Все данные загружены:');
+        console.log('Проекты:', projectsCache);
+        console.log('Менеджеры:', managersCache);
+        console.log('Исполнители:', executorsCache);
         loadReports();
     });
 
     $('.filter__search').on('submit', function (e) {
         e.preventDefault();
         const searchTerm = $(this).find('input[name="search"]').val();
-        loadReports(searchTerm);
+        const statusFilter = $('.filter__status').val();
+        loadReports(searchTerm, statusFilter);
     });
 
     $('.filter__status').on('change', function () {
         const statusFilter = $(this).val();
-        loadReports('', statusFilter);
+        const searchTerm = $('.filter__search-input').val();
+        loadReports(searchTerm, statusFilter);
+    });
+
+    $('.filter__reset').on('click', function () {
+        $('.filter__search-input').val('');
+        $('.filter__status').val('all');
+        loadReports(); // Сброс фильтров и загрузка всех отчетов
     });
 });
