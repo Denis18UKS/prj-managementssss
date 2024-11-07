@@ -24,14 +24,14 @@ $(document).ready(function () {
 
     function loadTasksIntoCache() {
         return $.ajax({
-            url: 'http://prj-backend/gettasks',
+            url: 'http://prj-backend/tasks',
             method: 'GET',
             success: function (data) {
                 completedTasksCount = 0;
                 incompleteTasksCount = 0;
                 data.forEach(task => {
-                    if (task.id_tasks) { // Проверка на существование id_tasks
-                        tasksCache[task.id_tasks] = task;
+                    if (task.id) { // Проверка на существование id_tasks
+                        tasksCache[task.id] = task;
 
                         if (task.project_id) {
                             if (!projectsCache[task.project_id]) {
@@ -89,11 +89,11 @@ $(document).ready(function () {
             const taskId = report.id;
             const task = taskId && tasksCache[taskId]
                 ? tasksCache[taskId]
-                : { title: 'Задача не указана', status: 'Неизвестен' };
+                : 'Задача не указана';
 
-            const taskCount = report.project_id && projectsCache[report.project_id]
-                ? projectsCache[report.id].taskCount
-                : 0;
+            // const taskCount = report.project_id && projectsCache[report.project_id]
+            //     ? projectsCache[report.id].taskCount
+            //     : 0;
 
             const managerName = managersCache[report.maintainer_id] || 'Не указано';
             const executorName = executorsCache[report.executor_id] || 'Не указано';
@@ -108,13 +108,13 @@ $(document).ready(function () {
                 <div class="reports__card">
                     <div class="projects__card-title">Отчёт № ${report.id}</div>
                     <hr>
-                    <div class="projects__card-manager">Проект: ${projectTitle} (Задач: ${taskCount})</div>
+                    <div class="projects__card-manager">Проект: ${projectTitle} (Задач: ${report.task_counts.total})</div>
                     <hr>
-                    <div class="projects__card-task">Задача: ${task.title}</div>
+                    <div class="projects__card-task">Новые задачи: ${report.task_counts.created}</div>
                     <hr>
-                    <div class="projects__card-task">Завершенные задачи: ${completedTasksCount}</div>
+                    <div class="projects__card-task">Завершенные задачи: ${report.task_counts.in_progress}</div>
                     <hr>
-                    <div class="projects__card-task">Незавершенные задачи: ${incompleteTasksCount}</div>
+                    <div class="projects__card-task">Незавершенные задачи: ${report.task_counts.completed}</div>
                     <hr>
                     <div class="projects__card-managers">Руководитель: ${managerName}</div>
                     <hr>

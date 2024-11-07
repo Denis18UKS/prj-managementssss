@@ -32,8 +32,8 @@
 
         <select class="filter__status">
             <option value="all">Все</option>
-            <option value="завершена">Завершённые</option>
-            <option value="незавершена">Незавершённые</option>
+            <option value="completed">Завершённые</option>
+            <option value="created">Незавершённые</option>
         </select>
     </div>
 
