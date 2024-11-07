@@ -42,7 +42,7 @@ $(document).ready(function () {
 
                         if (task.status === 'Завершена') {
                             completedTasksCount++;
-                        } else {
+                        } else if (task.status === 'Выполняется' || task.status === 'Назначена') {
                             incompleteTasksCount++;
                         }
                     }
@@ -102,9 +102,9 @@ $(document).ready(function () {
                     <hr>
                     <div class="projects__card-task">Новые задачи: ${report.task_counts.created}</div>
                     <hr>
-                    <div class="projects__card-task">Завершенные задачи: ${report.task_counts.in_progress}</div>
+                    <div class="projects__card-task">Завершенные задачи: ${report.task_counts.completed}</div>
                     <hr>
-                    <div class="projects__card-task">Незавершенные задачи: ${report.task_counts.completed}</div>
+                    <div class="projects__card-task">Незавершенные задачи: ${report.task_counts.in_progress}</div>
                     <hr>
                     <div class="projects__card-managers">Руководитель: ${managerName}</div>
                     <hr>

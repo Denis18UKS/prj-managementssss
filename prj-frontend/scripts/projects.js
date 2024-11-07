@@ -18,19 +18,26 @@ $(document).ready(function () {
                     filteredData = filteredData.filter(project => project.status === filters.status);
                 }
 
-                // Фильтрация по близким датам
-                if (filters.endDate === 'near') {
-                    const today = new Date();
-                    filteredData = filteredData.filter(project => {
-                        const endDate = new Date(project.end_date);
-                        const diffInDays = (endDate - today) / (1000 * 60 * 60 * 24);
-                        return diffInDays >= 0 && diffInDays <= 5;
-                    });
-                }
-
                 filteredData.forEach(function (project) {
                     const startDate = new Date(project.start_date).toLocaleDateString();
                     const endDate = new Date(project.end_date).toLocaleDateString();
+                    let editButton = ''
+                    let deleteButton = ''
+
+                    if (project.status !== 'created') {
+                        editButton = ''
+                        deleteButton = ''
+                    } else {
+                        editButton = `<button class="btn btn-dark edit-project" data-id="${project.id}">Редактировать</button>`
+                        deleteButton = `<button class="btn btn-danger delete-project" data-id="${project.id}">Удалить</button>`
+                    }
+
+                    let deadlineMessage = '';
+                    if (project.remaining_days < 0 && project.status !== 'completed') {
+                        deadlineMessage = '<div class="task-deadline-message">Срок истёк</div>';
+                    }
+
+
                     const projectHTML = `
                         <div class="tasks__card ${project.priority}">
                             <div class="tasks__card-title">Название: ${project.title}</div>
@@ -43,8 +50,8 @@ $(document).ready(function () {
                             <div class="tasks__card-status">Статус: ${project.status}</div>
                             <div class="tasks__card-remaining_days">Осталось дней: ${project.remaining_days}</div>
                             <div id='btns'>
-                                <button class="btn btn-dark edit-project" data-id="${project.id}">Редактировать</button>
-                                <button class="btn btn-danger delete-project" data-id="${project.id}">Удалить</button>
+                                ${editButton}
+                                ${deleteButton}
                             </div>
                         </div>
                     `;
@@ -64,12 +71,10 @@ $(document).ready(function () {
     $('.filter-btn, .status-filter-btn').on('click', function () {
         const priority = $(this).data('priority');
         const status = $(this).data('status');
-        const endDate = $(this).data('end-date');
 
         const filters = {
             priority: priority || null,
             status: status || null,
-            endDate: endDate || null,
         };
 
         loadProjects(filters);

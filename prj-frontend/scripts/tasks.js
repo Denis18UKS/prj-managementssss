@@ -71,18 +71,24 @@ $(document).ready(function () {
                     return matchesStatus && matchesPriority; // Применяем оба фильтра
                 });
 
-                displayTasks(filteredTasks);
+                displayTasks(filteredTasks, filters);
             },
             error: function (xhr, status, error) {
                 console.error('Ошибка при загрузке задач:', error);
             }
         });
     }
-
+    
     // Функция отображения задач
     function displayTasks(tasks) {
         const tasksContainer = $('.tasks__list');
         tasksContainer.empty();
+
+        if (tasks.length === 0) {
+            let filterType = filters.status ? 'по статусу' : 'по приоритету';
+            tasksContainer.append(`<p>Задачи ${filterType} "${filters.priority || filters.status}" не найдены</p>`);
+            return;
+        }
 
         tasks.forEach(function (task) {
             const projectTitle = projectsCache[task.project_id] || 'Неизвестный проект';
