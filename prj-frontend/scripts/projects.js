@@ -1,13 +1,30 @@
 $(document).ready(function () {
     // Загрузка проектов
-    function loadProjects() {
+    function loadProjects(filters = {}) {
         $.ajax({
             url: 'http://prj-backend/projects',
             method: 'GET',
             dataType: 'json',
             success: function (data) {
                 $('.tasks__cards').empty();
-                data.forEach(function (project) {
+
+                let filteredData = data
+
+                if (filters.priority) {
+                    filteredData = filteredData.filter(project => project.priority === filters.priority)
+                }
+
+                if (filters.endDate === 'near') {
+                    const today = new Date();
+                    filteredData = filteredData.filter(project => {
+                        const endDate = new Date(project.end_date);
+                        const diffInDays = (endDate - today) / (1000 * 60 * 60 * 24);
+                        return diffInDays >= 0 && diffInDays <= 5;
+                    })
+                    console.log(filteredData);
+                }
+
+                filteredData.forEach(function (project) {
                     const startDate = new Date(project.start_date).toLocaleDateString();
                     const endDate = new Date(project.end_date).toLocaleDateString();
 
@@ -36,6 +53,20 @@ $(document).ready(function () {
             }
         });
     }
+
+    loadProjects();
+
+    $('.filter-btn').on('click', function () {
+        const priority = $(this).data('priority');
+        const endDate = $(this).data('end_date');
+
+        const filters = {
+            priority: priority || null,
+            endDate: endDate || null,
+        };
+
+        loadProjects(filters);
+    });
 
     // Установка минимальной даты окончания на сегодняшнюю дату
     function setMinDate() {

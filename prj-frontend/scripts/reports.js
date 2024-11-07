@@ -82,25 +82,15 @@ $(document).ready(function () {
         }
 
         reports.forEach(report => {
-            const projectTitle = report.id && projectsCache[report.id]
-                ? projectsCache[report.id]
-                : 'Проект не указан';
-
             const taskId = report.id;
-            const task = taskId && tasksCache[taskId]
-                ? tasksCache[taskId]
-                : 'Задача не указана';
-
-            // const taskCount = report.project_id && projectsCache[report.project_id]
-            //     ? projectsCache[report.id].taskCount
-            //     : 0;
-
+            const task = taskId && tasksCache[taskId];
+            const projectTitle = report.title || 'Проект не указан';
             const managerName = managersCache[report.maintainer_id] || 'Не указано';
             const executorName = executorsCache[report.executor_id] || 'Не указано';
             const remainingDays = report.remaining_days || 'Не указано';
             const status = report.status || 'Не указан';
 
-            if (statusFilter !== 'all' && task.status !== statusFilter) {
+            if (statusFilter !== 'all' && task && task.status !== statusFilter) {
                 return;
             }
 
@@ -163,6 +153,6 @@ $(document).ready(function () {
     $('.filter__reset').on('click', function () {
         $('.filter__search-input').val('');
         $('.filter__status').val('all');
-        loadReports(); // Сброс фильтров и загрузка всех отчетов
+        loadReports();
     });
 });
