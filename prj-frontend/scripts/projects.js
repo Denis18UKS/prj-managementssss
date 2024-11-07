@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    // Загрузка проектов
     function loadProjects(filters = {}) {
         $.ajax({
             url: 'http://prj-backend/projects',
@@ -7,35 +6,39 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 $('.tasks__cards').empty();
+                let filteredData = data;
 
-                let filteredData = data
-
+                // Фильтрация по приоритету
                 if (filters.priority) {
-                    filteredData = filteredData.filter(project => project.priority === filters.priority)
+                    filteredData = filteredData.filter(project => project.priority === filters.priority);
                 }
 
+                // Фильтрация по статусу
+                if (filters.status) {
+                    filteredData = filteredData.filter(project => project.status === filters.status);
+                }
+
+                // Фильтрация по близким датам
                 if (filters.endDate === 'near') {
                     const today = new Date();
                     filteredData = filteredData.filter(project => {
                         const endDate = new Date(project.end_date);
                         const diffInDays = (endDate - today) / (1000 * 60 * 60 * 24);
                         return diffInDays >= 0 && diffInDays <= 5;
-                    })
-                    console.log(filteredData);
+                    });
                 }
 
                 filteredData.forEach(function (project) {
                     const startDate = new Date(project.start_date).toLocaleDateString();
                     const endDate = new Date(project.end_date).toLocaleDateString();
-
-                    $('.tasks__cards').append(`
+                    const projectHTML = `
                         <div class="tasks__card ${project.priority}">
                             <div class="tasks__card-title">Название: ${project.title}</div>
                             <div class="tasks__card-description">Описание: ${project.description}</div>
                             <div class="tasks__card-start">Дата начала: ${startDate}</div>
                             <div class="tasks__card-end">Дата окончания: ${endDate}</div>
-                <div class="tasks__card-manager">Руководитель: ${project.maintainer ? project.maintainer.name : 'Не назначен'}</div>
-                <div class="tasks__card-executor">Исполнитель: ${project.executor ? project.executor.name : 'Не назначен'}</div>
+                            <div class="tasks__card-manager">Руководитель: ${project.maintainer ? project.maintainer.name : 'Не назначен'}</div>
+                            <div class="tasks__card-executor">Исполнитель: ${project.executor ? project.executor.name : 'Не назначен'}</div>
                             <div class="tasks__card-priority">Приоритет: ${project.priority}</div>
                             <div class="tasks__card-status">Статус: ${project.status}</div>
                             <div class="tasks__card-remaining_days">Осталось дней: ${project.remaining_days}</div>
@@ -44,8 +47,10 @@ $(document).ready(function () {
                                 <button class="btn btn-danger delete-project" data-id="${project.id}">Удалить</button>
                             </div>
                         </div>
-                    `);
+                    `;
+                    $('.tasks__cards').append(projectHTML);
                 });
+
                 attachProjectActions();
             },
             error: function (xhr, status, error) {
@@ -56,17 +61,20 @@ $(document).ready(function () {
 
     loadProjects();
 
-    $('.filter-btn').on('click', function () {
+    $('.filter-btn, .status-filter-btn').on('click', function () {
         const priority = $(this).data('priority');
-        const endDate = $(this).data('end_date');
+        const status = $(this).data('status');
+        const endDate = $(this).data('end-date');
 
         const filters = {
             priority: priority || null,
+            status: status || null,
             endDate: endDate || null,
         };
 
         loadProjects(filters);
     });
+
 
     // Установка минимальной даты окончания на сегодняшнюю дату
     function setMinDate() {

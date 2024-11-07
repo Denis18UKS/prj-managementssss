@@ -37,6 +37,9 @@
                     <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'users.php') ? 'active' : ''; ?>" href="users.php">Пользователи</a>
                 </li>
                 <li class="nav__menu-item">
+                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'tasks.php') ? 'active' : ''; ?>" href="tasks.php">Задачи</a>
+                </li>
+                <li class="nav__menu-item">
                     <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'reports.php') ? 'active' : ''; ?>" href="reports.php">Отчёты</a>
                 </li>
             </ul>

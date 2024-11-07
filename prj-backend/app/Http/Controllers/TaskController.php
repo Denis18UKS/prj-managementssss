@@ -20,13 +20,6 @@ class TaskController extends Controller
         return response()->json($tasks, 200);
     }
 
-    public function getTasks()
-    {
-        $tasks = Task::select('id', 'title')->get();
-        Log::info('Tasks fetched', ['tasks' => $tasks]);
-        return response()->json($tasks, 200);
-    }
-
     // TaskController.php
     public function updateStatus(Request $request, $id)
     {
@@ -59,7 +52,8 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'required|date|before_or_equal:end_date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'project_id' => 'required'
+            'project_id' => 'required',
+            'priority' => 'required|in:Низкий,Средний,Высокий',
         ];
     }
 

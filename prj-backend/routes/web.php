@@ -46,5 +46,3 @@ Route::post('tasks/{taskId}/comments', [CommentController::class, 'store']);
 
 // Отчёты
 Route::get('reports', [ProjectController::class, 'getProjectStatistics']);
-
-Route::get('/gettasks', [TaskController::class, 'getTasks']);
