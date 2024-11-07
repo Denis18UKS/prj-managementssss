@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Исполнитель задачи
-            $table->enum('priority', ['low', 'medium', 'high']);
+            $table->enum('priority', ['Низкий', 'Средний', 'Высокий']);
             $table->date('start_date');
             $table->date('end_date');
             $table->enum('status', ['Назначена', 'Выполняется', 'Завершена']);
@@ -31,11 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->dropForeign(['assignee_id']);
-            $table->dropColumn('assignee_id');
-        });
-
         Schema::dropIfExists('tasks');
     }
 };

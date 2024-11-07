@@ -10,7 +10,12 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'task_id',  // добавьте это поле для массового присвоения
-        'comment',
+        'task_id',
+        'comment', // добавляем поле user_id в список доступных для массового заполнения
     ];
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }

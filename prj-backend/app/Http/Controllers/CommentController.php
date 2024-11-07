@@ -18,8 +18,16 @@ class CommentController extends Controller
             ->header('Access-Control-Allow-Origin', '*');
     }
 
+    public function index()
+    {
+        // Загрузить все комментарии вместе с задачами и пользователями
+        $comments = Comment::with(['task'])->get();
 
-    public function index($taskId)
+        return response()->json($comments)
+            ->header('Access-Control-Allow-Origin', '*');
+    }
+
+    public function getCommentsForTask($taskId)
     {
         $comments = Comment::where('task_id', $taskId)->get();
         return response()->json($comments)

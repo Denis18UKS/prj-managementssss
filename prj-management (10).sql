@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 05 2024 г., 10:47
+-- Время создания: Ноя 08 2024 г., 01:33
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -31,21 +31,10 @@ CREATE TABLE `comments` (
   `id` bigint UNSIGNED NOT NULL,
   `task_id` bigint UNSIGNED NOT NULL,
   `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `comments`
---
-
-INSERT INTO `comments` (`id`, `task_id`, `comment`, `created_at`, `updated_at`) VALUES
-(20, 15, 'dwdw', '2024-11-05 03:19:23', '2024-11-05 03:19:23'),
-(21, 6, 'ddw', '2024-11-05 03:19:26', '2024-11-05 03:19:26'),
-(22, 6, 'dwdw', '2024-11-05 03:19:30', '2024-11-05 03:19:30'),
-(23, 1, 'wdwdw', '2024-11-05 03:19:34', '2024-11-05 03:19:34'),
-(24, 10, 'dwdwdw\ndwddwdw\ndwwdw', '2024-11-05 03:19:43', '2024-11-05 03:19:43'),
-(25, 10, 'dw', '2024-11-05 03:19:53', '2024-11-05 03:19:53');
 
 -- --------------------------------------------------------
 
@@ -198,10 +187,12 @@ CREATE TABLE `projects` (
 
 INSERT INTO `projects` (`id`, `maintainer_id`, `executor_id`, `title`, `description`, `start_date`, `end_date`, `status`, `priority`, `remaining_days`, `created_at`, `updated_at`) VALUES
 (2, 2, 4, 'proect #1', 'proect #1proect #1proect #1', '2024-10-12', '2024-12-12', 'completed', 'low', 0, '2024-11-02 01:04:44', '2024-11-03 18:07:07'),
-(3, 2, 4, 'proect #2', 'proect #2proect #2proect #2', '2024-11-02', '2024-11-22', 'created', 'medium', 18, '2024-11-02 01:06:56', '2024-11-03 05:03:11'),
-(4, 2, 4, 'proect #3', 'proect #3proect #3proect #3proect #3proect #3', '2024-11-02', '2024-11-06', 'created', 'high', 2, '2024-11-02 01:07:43', '2024-11-03 11:30:02'),
+(3, 2, 4, 'proect #2', 'proect #2proect #2proect #2', '2024-11-02', '2024-11-22', 'in_progress', 'high', 14, '2024-11-02 01:06:56', '2024-11-07 13:21:54'),
+(4, 2, 4, 'proect #3', 'proect #3proect #3proect #3proect #3proect #3', '2024-11-02', '2024-11-23', 'created', 'medium', 15, '2024-11-02 01:07:43', '2024-11-07 13:20:44'),
 (16, 2, 5, 'proect #4', 'proect #4proect #4proect #4proect #4proect #4', '2024-11-03', '2024-12-31', 'in_progress', 'low', 57, '2024-11-03 11:17:38', '2024-11-03 14:07:23'),
-(18, NULL, 4, 'test', 'testtest', '2024-12-12', '2024-12-13', 'created', 'high', 37, '2024-11-05 03:58:53', '2024-11-05 03:58:53');
+(18, NULL, 4, 'test', 'testtest', '2024-12-12', '2024-12-13', 'created', 'high', 37, '2024-11-05 03:58:53', '2024-11-05 03:58:53'),
+(19, 2, 4, 'proect #5', 'nearnearnearnearnear', '2024-11-07', '2024-11-23', 'created', 'medium', 15, '2024-11-07 09:48:17', '2024-11-07 09:48:17'),
+(20, 3, 5, 'testers', 'testers', '2024-11-12', '2025-12-12', 'created', 'low', 399, '2024-11-07 12:10:58', '2024-11-07 12:10:58');
 
 -- --------------------------------------------------------
 
@@ -267,8 +258,9 @@ INSERT INTO `tasks` (`id`, `title`, `description`, `project_id`, `priority`, `st
 (1, 'вцвцвц', 'вцвцвцвц', 2, 'Низкий', '2024-11-15', '2024-11-29', 'Завершена', '2024-11-02 01:08:58', '2024-11-03 01:42:59'),
 (6, '1w21', 'dwwdwa', 3, 'Низкий', '2024-12-11', '2024-12-12', 'Завершена', '2024-11-02 14:26:19', '2024-11-03 02:59:43'),
 (10, 'цвцвц', 'цвцвц', 4, 'Низкий', '2024-12-12', '2024-12-14', 'Выполняется', '2024-11-03 03:00:21', '2024-11-03 09:14:28'),
-(15, 'цввццвцв', 'вцввццвцв', 16, 'Низкий', '2024-10-13', '2024-12-08', 'Назначена', '2024-11-03 10:18:39', '2024-11-03 11:19:02'),
-(18, 'testtest', 'testtest', 18, 'Низкий', '2024-12-12', '2024-12-13', 'Назначена', '2024-11-05 03:59:17', '2024-11-05 03:59:17');
+(18, 'testtest', 'testtest', 18, 'Низкий', '2024-12-12', '2024-12-13', 'Выполняется', '2024-11-05 03:59:17', '2024-11-07 13:28:21'),
+(19, '123', '123123', 2, 'Высокий', '2024-11-07', '2024-12-28', 'Назначена', '2024-11-07 10:20:13', '2024-11-07 15:06:43'),
+(20, 'testers', 'testers', 20, 'Низкий', '2024-12-12', '2025-02-12', 'Завершена', '2024-11-07 12:12:50', '2024-11-07 13:30:07');
 
 -- --------------------------------------------------------
 
@@ -307,7 +299,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `comments_task_id_foreign` (`task_id`);
+  ADD KEY `comments_task_id_foreign` (`task_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Индексы таблицы `failed_jobs`
@@ -402,7 +395,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT для таблицы `failed_jobs`
@@ -432,7 +425,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT для таблицы `roles`
@@ -444,7 +437,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

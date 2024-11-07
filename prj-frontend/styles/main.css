@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 *,
 *::after,
 *::before {
@@ -14,7 +14,7 @@ a {
     text-decoration: none;
 }
 .container {
-    max-width: 1400px;    
+    max-width: 1400px;
     width: 100%;
     margin: 0 auto;
 }
@@ -32,3 +32,4 @@ h2.title {
     line-height: 34px;
     color: #262626;
 }
+
