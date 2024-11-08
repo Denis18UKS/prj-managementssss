@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="../styles/user.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
     <script src="../scripts/logout.js" defer></script>
-    <script src="../scripts/projects.js" defer></script>
+    <script src="../scripts/projects_for_managers.js" defer></script>
     <script src="../scripts/tasks.js" defer></script>
 </head>
 
 <body>
-    <?php include 'admin-sidebar.php'; ?> <!-- Включаем навигационную панель -->
+    <?php include 'manager-sidebar.php'; ?> <!-- Включаем навигационную панель -->
 
     <div class="container">
         <div class="filter">
@@ -46,26 +46,26 @@
             <h2>Редактировать проект</h2>
 
             <label for="editProjectName">Название проекта</label>
-            <input type="text" id="editProjectName" placeholder="Название проекта" required>
+            <input disabled type="text" id="editProjectName" placeholder="Название проекта" required>
 
             <label for="editProjectDescription">Описание проекта</label>
-            <textarea id="editProjectDescription" placeholder="Описание проекта" rows="4"></textarea>
+            <textarea disabled id="editProjectDescription" placeholder="Описание проекта" rows="4"></textarea>
 
             <label for="editProjectStartDate">Дата начала:</label>
-            <input type="date" id="editProjectStartDate" required>
+            <input disabled type="date" id="editProjectStartDate" required>
 
             <label for="editProjectEndDate">Дата окончания:</label>
-            <input type="date" id="editProjectEndDate" required>
+            <input disabled type="date" id="editProjectEndDate" required>
 
             <label for="editProjectStatus">Статус проекта</label>
-            <select id="editProjectStatus" disabled>
+            <select id="editProjectStatus">
                 <option value="created">Создан</option>
                 <option value="in_progress">В процессе</option>
                 <option value="completed">Завершён</option>
             </select>
 
             <label for="editProjectManager">Руководители</label>
-            <select id="editProjectManager"></select>
+            <select id="editProjectManager" disabled></select>
 
             <label for="editProjectExecutor">Исполнитель:</label>
             <select id="editProjectExecutor"></select>

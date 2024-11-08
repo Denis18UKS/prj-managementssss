@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +13,7 @@ class Task extends Model
     protected $fillable = [
         'title',
         'description',
+        'priority',
         'start_date',
         'end_date',
         'project_id'
@@ -32,5 +34,22 @@ class Task extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+
+    public function scopeCreated(Builder $builder)
+    {
+        return $builder->where('status', 'Назначена');
+    }
+
+
+    public function scopeCompleted(Builder $builder)
+    {
+        return $builder->where('status', 'Завершена');
+    }
+
+    public function scopeInProgress(Builder $builder)
+    {
+        return $builder->where('status', 'Выполняется');
     }
 }

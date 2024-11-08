@@ -41,11 +41,12 @@ Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 Route::patch('tasks/{id}/status', [TaskController::class, 'updateStatus']);
 
 // Комментарии
-Route::get('tasks/{taskId}/comments', [CommentController::class, 'index']);
+Route::get('/tasks/{taskId}/comments', [CommentController::class, 'getCommentsForTask']);
+
 Route::post('tasks/{taskId}/comments', [CommentController::class, 'store']);
+
+
+Route::get('comments', [CommentController::class, 'index']);
 
 // Отчёты
 Route::get('reports', [ProjectController::class, 'getProjectStatistics']);
-
-Route::get('/getprojects', [ProjectController::class, 'getProjects']);
-Route::get('/gettasks', [TaskController::class, 'getTasks']);

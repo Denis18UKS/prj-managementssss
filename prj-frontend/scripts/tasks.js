@@ -58,20 +58,58 @@ $(document).ready(function () {
         return `${('0' + date.getDate()).slice(-2)}.${('0' + (date.getMonth() + 1)).slice(-2)}.${date.getFullYear()}`;
     }
 
+
+    // Загрузка задач с сервера
+    function loadTasks(filters = {}) {
+        $.ajax({
+            url: 'http://prj-backend/tasks',
+            method: 'GET',
+            success: function (data) {
+                const filteredTasks = data.filter(task => {
+                    const matchesStatus = filters.status ? task.status === filters.status : true;
+                    const matchesPriority = filters.priority ? task.priority === filters.priority : true;
+                    return matchesStatus && matchesPriority; // Применяем оба фильтра
+                });
+
+                displayTasks(filteredTasks, filters);
+            },
+            error: function (xhr, status, error) {
+                console.error('Ошибка при загрузке задач:', error);
+            }
+        });
+    }
+    
     // Функция отображения задач
     function displayTasks(tasks) {
         const tasksContainer = $('.tasks__list');
         tasksContainer.empty();
 
+        if (tasks.length === 0) {
+            let filterType = filters.status ? 'по статусу' : 'по приоритету';
+            tasksContainer.append(`<p>Задачи ${filterType} "${filters.priority || filters.status}" не найдены</p>`);
+            return;
+        }
+
         tasks.forEach(function (task) {
             const projectTitle = projectsCache[task.project_id] || 'Неизвестный проект';
-            const editButton = task.status === 'Завершена' ? '' : `<button class="btn btn-dark edit-task" data-id="${task.id}">Редактировать</button>`;
-            const deleteButton = task.status === 'Завершена' ? '' : `<button class="btn btn-danger delete-task" data-id="${task.id}">Удалить</button>`;
+            let editButton = '';
+            let deleteButton = '';
+
+            // Проверяем статус задачи и назначаем соответствующие кнопки
+            if (task.status !== 'Назначена') {
+                editButton = '';
+                deleteButton = '';
+            } else {
+                // Измените этот блок, если есть другие статусы, которые вы хотите обработать
+                editButton = `<button class="btn btn-dark edit-task" data-id="${task.id}">Редактировать</button>`;
+                deleteButton = `<button class="btn btn-danger delete-task" data-id="${task.id}">Удалить</button>`;
+            }
+
 
             const taskCard = `
                 <div class="task-card">
-                    <h3>${task.title}</h3>
-                    <p>${task.description}</p>
+                    <h3>Название: ${task.title}</h3>
+                    <p>Описание: ${task.description}</p>
                     <p>Приоритет: ${task.priority}</p>
                     <p>Статус: ${task.status}</p>
                     <p>Дней осталось: ${task.days_left}</p>
@@ -86,19 +124,6 @@ $(document).ready(function () {
         });
     }
 
-    // Загрузка задач с сервера
-    function loadTasks() {
-        $.ajax({
-            url: 'http://prj-backend/tasks',
-            method: 'GET',
-            success: function (data) {
-                displayTasks(data);
-            },
-            error: function (xhr, status, error) {
-                console.error('Ошибка при загрузке задач:', error);
-            }
-        });
-    }
 
     // Функция открытия модального окна редактирования задачи
     function openEditTaskModal(taskId) {
@@ -138,6 +163,27 @@ $(document).ready(function () {
         });
     }
 
+    // Привязываем события для фильтров по приоритету
+    $('.filter-btn').on('click', function () {
+        const priority = $(this).data('priority');
+
+        const filters = {
+            priority: priority || null,
+        };
+
+        loadTasks(filters);
+    });
+
+    $('.status-filter-btn').on('click', function () {
+        const status = $(this).data('status');
+
+        const filters = {
+            status: status || null,
+        };
+
+        loadTasks(filters);
+    });
+
     // Открытие модального окна для создания задачи
     $('#createTaskBtn').click(function () {
         $('#createTaskModal').show();
@@ -152,6 +198,7 @@ $(document).ready(function () {
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
         const projectID = $('#projectSelect').val();
+        const priority = $('#projectPriority').val(); // Получаем значение 
 
         if (!taskName || !startDate || !endDate || startDate > endDate) {
             alert('Пожалуйста, заполните все поля корректно');
@@ -167,6 +214,7 @@ $(document).ready(function () {
                 description: taskDescription,
                 start_date: startDate,
                 end_date: endDate,
+                priority: priority,
                 project_id: projectID
             }),
             success: function () {
@@ -189,6 +237,7 @@ $(document).ready(function () {
         const startDate = $('#editTaskStartDate').val();
         const endDate = $('#editTaskEndDate').val();
         const projectID = $('#editTaskProject').val();
+        const priority = $('#editProjectPriority').val(); // Получаем значение 
 
         if (!taskName || !startDate || !endDate || startDate > endDate) {
             alert('Пожалуйста, заполните все поля корректно');
@@ -203,6 +252,7 @@ $(document).ready(function () {
                 title: taskName,
                 description: taskDescription,
                 start_date: startDate,
+                priority: priority,
                 end_date: endDate,
                 project_id: projectID
             }),

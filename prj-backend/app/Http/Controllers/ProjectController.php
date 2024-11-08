@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
     public function index()
     {
         Log::info('Fetching all projects');
-        $projects = Project::with(['maintainer', 'executor'])->get();
+        $projects = Project::with(['maintainer', 'executor', 'tasks'])->get();
         Log::info('Projects fetched successfully', ['count' => $projects->count()]);
         return $projects;
     }
@@ -108,22 +108,7 @@ class ProjectController extends Controller
     public function getProjectStatistics()
     {
         try {
-            $projects = Project::withCount([
-                'tasks as total_tasks' => function ($query) {
-                    $query->select(DB::raw('count(*)'));
-                },
-                'tasks as in_progress' => function ($query) {
-                    $query->where('status', 'Выполняется');
-                },
-                'tasks as completed' => function ($query) {
-                    $query->where('status', 'Завершена');
-                },
-                'tasks as new' => function ($query) {
-                    $query->where('status', 'Назначена');
-                },
-            ])->get();
-
-            return response()->json($projects);
+            return response()->json(ProjectResource::collection(Project::all()));
         } catch (\Exception $e) {
             Log::error('Ошибка при получении данных для отчета: ' . $e->getMessage());
             return response()->json(['error' => 'Не удалось получить данные для отчета. Попробуйте позже.'], 500);
