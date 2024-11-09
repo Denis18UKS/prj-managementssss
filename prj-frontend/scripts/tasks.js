@@ -78,7 +78,7 @@ $(document).ready(function () {
             }
         });
     }
-    
+
     // Функция отображения задач
     function displayTasks(tasks) {
         const tasksContainer = $('.tasks__list');
@@ -108,14 +108,18 @@ $(document).ready(function () {
 
             const taskCard = `
                 <div class="task-card">
-                    <h3>Название: ${task.title}</h3>
-                    <p>Описание: ${task.description}</p>
-                    <p>Приоритет: ${task.priority}</p>
-                    <p>Статус: ${task.status}</p>
-                    <p>Дней осталось: ${task.days_left}</p>
-                    <p>Дата начала: ${formatDate(task.start_date)}</p>
-                    <p>Дата окончания: ${formatDate(task.end_date)}</p>
+                    <h3 class='tasks__card-title'>Название: ${task.title}</h3>
+                    <p class='tasks__card-description'>Описание: ${task.description}</p>
+                    <hr>
+                    <p class='tasks__card-priority'>Приоритет: ${task.priority}</p>
+                    <hr>
+                    <p class='tasks__card-status'>Статус: ${task.status}</p>
+                    <hr>
+                    <p class='tasks__card-start'>Дата начала: ${formatDate(task.start_date)}</p>
+                    <p class='tasks__card-end'>Дата окончания: ${formatDate(task.end_date)}</p>
+                    <hr>
                     <p>Проект: ${projectTitle}</p>
+                    <p><i>Дней осталось: ${task.days_left}</i></p>
                     ${editButton}
                     ${deleteButton}
                 </div>

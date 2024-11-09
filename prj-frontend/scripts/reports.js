@@ -100,11 +100,11 @@ $(document).ready(function () {
                     <hr>
                     <div class="projects__card-manager">Проект: ${projectTitle} (Задач: ${report.task_counts.total})</div>
                     <hr>
-                    <div class="projects__card-task">Новые задачи: ${report.task_counts.created}</div>
+                    <div class="projects__card-task"><b>Новые задачи: ${report.task_counts.created}</b></div>
                     <hr>
-                    <div class="projects__card-task">Завершенные задачи: ${report.task_counts.completed}</div>
+                    <div class="completed projects__card-task">Завершенные задачи: ${report.task_counts.completed}</div>
                     <hr>
-                    <div class="projects__card-task">Незавершенные задачи: ${report.task_counts.in_progress}</div>
+                    <div class="incompleted projects__card-task">Незавершенные задачи: ${report.task_counts.in_progress}</div>
                     <hr>
                     <div class="projects__card-managers">Руководитель: ${managerName}</div>
                     <hr>
