@@ -78,7 +78,7 @@ $(document).ready(function () {
                 deleteButton = '';
             } else {
                 deleteButton = `<button class="btn btn-danger delete-task" data-id="${task.id}">Удалить</button>`;
-            
+            }
 
 
             const taskCard = `
