@@ -31,13 +31,20 @@
             <p class="nav__menu-text">Меню</p>
             <ul class="nav__menu-list">
                 <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'projects.php') ? 'active' : ''; ?>" href="projects.php">Главная</a>
+                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'projects.php') ? 'active' : ''; ?>"
+                        href="projects.php">Главная</a>
                 </li>
                 <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'tasks.php') ? 'active' : ''; ?>" href="tasks.php">Задачи</a>
+                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'tasks.php') ? 'active' : ''; ?>"
+                        href="tasks.php">Задачи</a>
                 </li>
                 <li class="nav__menu-item">
-                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'reports.php') ? 'active' : ''; ?>" href="reports.php">Отчёты</a>
+                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'commentaries.php') ? 'active' : ''; ?>"
+                        href="commentaries.php">Комментарии</a>
+                </li>
+                <li class="nav__menu-item">
+                    <a class="nav__menu-item-link <?php echo (basename($_SERVER['PHP_SELF']) === 'reports.php') ? 'active' : ''; ?>"
+                        href="reports.php">Отчёты</a>
                 </li>
             </ul>
 
@@ -47,15 +54,15 @@
     </nav>
 
     <script>
-        document.getElementById("logout-button").addEventListener("click", function() {
+        document.getElementById("logout-button").addEventListener("click", function () {
             fetch('http://prj-backend/logout', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                })
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.message) {

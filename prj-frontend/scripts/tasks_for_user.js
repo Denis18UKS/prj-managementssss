@@ -86,19 +86,25 @@ $(document).ready(function () {
                             <div class="task-card" data-id="${task.id}">
                                 <div class="task-title">Название: ${task.title}</div>
                                 <div class="task-description">Описание: ${task.description}</div>
-                                <div class="task-project"><h6>Проект: ${projectName || 'Неизвестный проект'}</h6></div>
+                                <hr>
+                                <div class="task-project"><h6 class ='h6'>Проект: ${projectName || 'Неизвестный проект'}</h6></div>
+                                <hr>
                                 <div class="task-status"><strong>Статус:</strong> ${task.status}</div>
+                                <hr>
                                 <div class="task-dates">
-                                    Дата начала: ${formatDate(task.start_date)}<br>
-                                    Дата окончания: ${formatDate(task.end_date)}<br>
+                                    <div class="tasks__card-start">Дата начала: ${formatDate(task.start_date)}</div>
+                                    <div class="tasks__card-end">Дата окончания: ${formatDate(task.end_date)}</div>
                                     Осталось дней: ${daysLeft}
                                 </div>
+                                <hr>
                                 ${taskActions}
                                 <div class="comments">
                                     <textarea id="comment-input-${task.id}" placeholder="Введите комментарий"></textarea>
                                     <button class="btn btn-primary add-comment" data-task-id="${task.id}">Добавить комментарий</button>
-                                    <h6><b>Комментарии:</b></h6>
-                                    <div class="comments-list" id="comments-${task.id}">${commentsSection}</div>
+                                    <div class="comments-list" id="comments-${task.id}">
+                                    <h6><b><center>Комментарии</center></b></h6>
+                                    <hr>
+                                    ${commentsSection}</div>
                                 </div>
                             </div>
                         `;
@@ -117,12 +123,19 @@ $(document).ready(function () {
             url: `http://prj-backend/tasks/${taskId}/comments`,
             method: 'GET',
         }).then(comments => {
-            return comments.map(comment => `<div class="comment">${comment.comment}</div>`).join('');
+            return comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-text">${comment.comment}</div>
+                    <div style='color:black' class="comment-date">Дата создания: ${formatDate(comment.created_at)}</div>
+                    <hr style='background:black'>
+                </div>
+            `).join('');
         }).catch(xhr => {
             console.error('Ошибка при загрузке комментариев:', xhr);
             return '';
         });
     }
+
 
 
     function addComment(taskId, comment) {
